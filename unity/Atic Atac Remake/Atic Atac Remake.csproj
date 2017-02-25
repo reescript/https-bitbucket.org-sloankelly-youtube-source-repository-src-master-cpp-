@@ -77,6 +77,15 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\RoomBackground.cs" />
+    <Compile Include="Assets\Scripts\Serialization\AAColour.cs" />
+    <Compile Include="Assets\Scripts\Serialization\BackgroundObject.cs" />
+    <Compile Include="Assets\Scripts\Serialization\MapData.cs" />
+    <Compile Include="Assets\Scripts\Serialization\MapLoader.cs" />
+    <Compile Include="Assets\Scripts\Serialization\Screen.cs" />
+    <Compile Include="Assets\Scripts\Serialization\SerializedScreen.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Resources\completemap.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
