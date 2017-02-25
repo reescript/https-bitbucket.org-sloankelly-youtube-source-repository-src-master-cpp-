@@ -20,6 +20,11 @@ public class MapLoader : MonoBehaviour
     /// </summary>
     public Dictionary<int, Screen> Screens { get; private set; }
 
+    /// <summary>
+    /// The data has been loaded
+    /// </summary>
+    public bool IsLoaded { get; private set; }
+
     #endregion
 
     #region Unity messages
@@ -41,6 +46,8 @@ public class MapLoader : MonoBehaviour
         {
             Screens[screen.screenId] = screen;
         }
+
+        IsLoaded = true;
     }
 
     #endregion

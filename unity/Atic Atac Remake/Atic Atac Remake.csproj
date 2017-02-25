@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\RoomBackground.cs" />
+    <Compile Include="Assets\Scripts\ScreenController.cs" />
     <Compile Include="Assets\Scripts\Serialization\AAColour.cs" />
     <Compile Include="Assets\Scripts\Serialization\BackgroundObject.cs" />
     <Compile Include="Assets\Scripts\Serialization\MapData.cs" />
