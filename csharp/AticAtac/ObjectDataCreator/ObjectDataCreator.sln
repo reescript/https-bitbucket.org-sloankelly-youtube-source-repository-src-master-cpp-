@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectDataCreator", "ObjectDataCreator\ObjectDataCreator.csproj", "{8030D52F-BBB3-46FE-BD0F-94335765AEDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AticAtacTypes", "AticAtacTypes\AticAtacTypes.csproj", "{5AFB0796-F0AE-4146-B049-7CC06015955C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapShapeColourizer", "..\MapShapeColourizer\MapShapeColourizer.csproj", "{258E644C-5D8B-4046-9E4C-4DC71BB60549}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8030D52F-BBB3-46FE-BD0F-94335765AEDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8030D52F-BBB3-46FE-BD0F-94335765AEDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8030D52F-BBB3-46FE-BD0F-94335765AEDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8030D52F-BBB3-46FE-BD0F-94335765AEDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AFB0796-F0AE-4146-B049-7CC06015955C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AFB0796-F0AE-4146-B049-7CC06015955C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AFB0796-F0AE-4146-B049-7CC06015955C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AFB0796-F0AE-4146-B049-7CC06015955C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{258E644C-5D8B-4046-9E4C-4DC71BB60549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258E644C-5D8B-4046-9E4C-4DC71BB60549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258E644C-5D8B-4046-9E4C-4DC71BB60549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258E644C-5D8B-4046-9E4C-4DC71BB60549}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
