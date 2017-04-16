@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Custom Player Settings", "Custom Player Settings.csproj", "{E07B46CE-441C-86ED-43CA-65582DB3A448}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E07B46CE-441C-86ED-43CA-65582DB3A448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E07B46CE-441C-86ED-43CA-65582DB3A448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E07B46CE-441C-86ED-43CA-65582DB3A448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E07B46CE-441C-86ED-43CA-65582DB3A448}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
