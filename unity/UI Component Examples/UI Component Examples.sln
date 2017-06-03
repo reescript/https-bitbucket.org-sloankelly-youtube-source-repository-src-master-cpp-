@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI Component Examples", "UI Component Examples.csproj", "{B79371C5-CAD9-C954-FD83-1271E6AC89FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B79371C5-CAD9-C954-FD83-1271E6AC89FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79371C5-CAD9-C954-FD83-1271E6AC89FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79371C5-CAD9-C954-FD83-1271E6AC89FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79371C5-CAD9-C954-FD83-1271E6AC89FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
