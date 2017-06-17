@@ -6,9 +6,9 @@ using UnityEngine;
 namespace Com.SloanKelly.ZXSpectrum
 {
 	/// <summary>
-	/// Spectrum screen. This class uses https://en.wikipedia.org/wiki/Fluent_interface.
+	/// Spectrum screen.
 	/// </summary>
-	public class SpectrumScreen : MonoBehaviour, ISpectrumScreen
+	public class SpectrumScreen : MonoBehaviour
 	{
 		// True if flashing squares are to invert their ink/paper colours
 		bool inverse = false;
@@ -112,7 +112,7 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="paper">Paper.</param>
 		/// <param name="bright">If set to <c>true</c> bright.</param>
 		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		public ISpectrumScreen FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
+		public void FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
 		{
 			for (int i = x; i < x + width; i++)
 			{
@@ -121,48 +121,42 @@ namespace Com.SloanKelly.ZXSpectrum
 					SetAttributeX (i, j, ink, paper, bright, flashing);
 				}
 			}
-
-			return this;
 		}
 
 		/// <summary>
 		/// Set the overwrite draw mode on.
 		/// </summary>
 		/// <returns>The draw.</returns>
-		public ISpectrumScreen OverwriteDraw()
+		public void OverwriteDraw()
 		{
 			_drawMode = DrawMode.Overwrite;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the Or draw mode on.
 		/// </summary>
 		/// <returns>The draw.</returns>
-		public ISpectrumScreen OrDraw()
+		public void OrDraw()
 		{
 			_drawMode = DrawMode.Or;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the sprite draw to column order.
 		/// </summary>
 		/// <returns>The order sprite.</returns>
-		public ISpectrumScreen ColumnOrderSprite()
+		public void ColumnOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.ColumnOrder;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the sprite draw to row order.
 		/// </summary>
 		/// <returns>The order sprite.</returns>
-		public ISpectrumScreen RowOrderSprite()
+		public void RowOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.RowOrder;
-			return this;
 		}
 
 		/// <summary>
@@ -174,41 +168,26 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="cols">Cols.</param>
 		/// <param name="rows">Rows.</param>
 		/// <param name="data">Data.</param>
-		public ISpectrumScreen DrawSprite(int x, int y, int cols, int rows, params byte[] data)
+		public void DrawSprite(int x, int y, int cols, int rows, params byte[] data)
 		{
 			int offset = 0;
 
 			int most = _spriteFormat == SpriteFormat.ColumnOrder ? x : y;
 			int least = _spriteFormat == SpriteFormat.ColumnOrder ? y : x;
 
-			//if (_spriteFormat == SpriteFormat.ColumnOrder) 
-			//{
-				for (int i = most; i < most + cols; i++)
-					for (int j = least; j < least + rows; j++) 
-					{
-						for (int r = 0; r < 8; r++) {
-							Poke (i, j, r, data [r + offset]);
-						}
-
-						offset += 8;
-						offset %= data.Length;
-					}
-			//} 
-			/*else if (_spriteFormat == SpriteFormat.RowOrder) 
+			for (int i = most; i < most + cols; i++) 
 			{
-				for (int j = y; j < y + rows; j++)
-					for (int i = x; i < x + cols; i++)
+				for (int j = least; j < least + rows; j++) 
+				{
+					for (int r = 0; r < 8; r++) 
 					{
-						for (int r = 0; r < 8; r++) {
-							Poke (i, j, r, data [r + offset]);
-						}
-
-						offset += 8;
-						offset %= data.Length;
+						Poke (i, j, r, data [r + offset]);
 					}
-			}*/
 
-			return this;
+					offset += 8;
+					offset %= data.Length;
+				}
+			}
 		}
 			
 		/// <summary>
@@ -220,7 +199,7 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="index">Index.</param>
 		/// <param name="bright">If set to <c>true</c> bright.</param>
 		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		public ISpectrumScreen SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
+		public void SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
 		{
 			if (x < 0 || x >= 32)
 				throw new IndexOutOfRangeException ("X value out of range");
@@ -229,8 +208,6 @@ namespace Com.SloanKelly.ZXSpectrum
 				throw new IndexOutOfRangeException ("Y value out of range");
 
 			SetAttributeX (x, y, ink, paper, bright, flashing);
-
-			return this;
 		}
 
 		/// <summary>

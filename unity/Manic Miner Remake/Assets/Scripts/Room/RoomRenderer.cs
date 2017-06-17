@@ -59,28 +59,6 @@ public class RoomRenderer : MonoBehaviour
                 }
             }
         }
-        
-        //CellPoint pt = data.MinerWillyStart;
-        ////AddSprite("Miner Willy Start", pt.ToVector3(), minerStartTemp);
-
-        //foreach (var key in data.RoomKeys)
-        //{
-        //    //AddSprite("Key", key.Position.ToVector3(), roomKeyTemp);
-        //}
-
-        //// HACK: This does not belong here!
-        //charScreen.PrintAt(data.RoomName, 0, 16);
-        //charScreen.ApplyText();
     }
-
-    //protected void AddSprite(string name, Vector3 pos, Sprite sprite)
-    //{
-    //    GameObject go = new GameObject(name);
-    //    var sr = go.AddComponent<SpriteRenderer>();
-    //    sr.sprite = sprite;
-    //    sr.material = pixelPerfect;
-    //    go.transform.SetParent(target);
-    //    go.transform.localPosition = new Vector3(pos.x * 8, pos.y * -8, 0);
-    //}
 }
 
