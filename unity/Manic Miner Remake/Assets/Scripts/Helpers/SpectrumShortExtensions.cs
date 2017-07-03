@@ -14,7 +14,7 @@
     /// <summary>
     /// Get the Y value from the short.
     /// </summary>
-    /// <param name="s">Short</param>
+    /// <param name="s">Short</param>   
     /// <returns>Y co-ordinate</returns>
     public static int GetY(this short s)
     {

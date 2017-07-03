@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Com.SloanKelly.ZXSpectrum
 {
 	/// <summary>
-	/// Spectrum screen. This class uses https://en.wikipedia.org/wiki/Fluent_interface.
+	/// Spectrum screen. 
 	/// </summary>
 	public class SpectrumScreen : MonoBehaviour, ISpectrumScreen
 	{
@@ -80,14 +78,14 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <value>The texture.</value>
 		public Texture2D Texture { get { return _tex; } }
 
-		/// <summary>
-		/// Poke the specified byte at x, y, and row.
-		/// </summary>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="row">Row.</param>
-		/// <param name="val">Value.</param>
-		public void Poke(int x, int y, int row, byte val)
+        /// <summary>
+        /// Poke the specified byte at x, y, and row.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="row">Row.</param>
+        /// <param name="val">Value.</param>
+        public void Poke(int x, int y, int row, byte val)
 		{
 			if (_origin == Origin.Top) 
 			{
@@ -112,7 +110,7 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="paper">Paper.</param>
 		/// <param name="bright">If set to <c>true</c> bright.</param>
 		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		public ISpectrumScreen FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
+		public void FillAttribute(int x, int y, int width, int height, int ink, int paper, bool bright = false, bool flashing = false)
 		{
 			for (int i = x; i < x + width; i++)
 			{
@@ -121,106 +119,75 @@ namespace Com.SloanKelly.ZXSpectrum
 					SetAttributeX (i, j, ink, paper, bright, flashing);
 				}
 			}
-
-			return this;
 		}
 
 		/// <summary>
 		/// Set the overwrite draw mode on.
 		/// </summary>
 		/// <returns>The draw.</returns>
-		public ISpectrumScreen OverwriteDraw()
+		public void OverwriteDraw()
 		{
 			_drawMode = DrawMode.Overwrite;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the Or draw mode on.
 		/// </summary>
 		/// <returns>The draw.</returns>
-		public ISpectrumScreen OrDraw()
+		public void OrDraw()
 		{
 			_drawMode = DrawMode.Or;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the sprite draw to column order.
 		/// </summary>
 		/// <returns>The order sprite.</returns>
-		public ISpectrumScreen ColumnOrderSprite()
+		public void ColumnOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.ColumnOrder;
-			return this;
 		}
 
 		/// <summary>
 		/// Set the sprite draw to row order.
 		/// </summary>
 		/// <returns>The order sprite.</returns>
-		public ISpectrumScreen RowOrderSprite()
+		public void RowOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.RowOrder;
-			return this;
 		}
 
-		/// <summary>
-		/// Draw a sprite at the given position.
-		/// </summary>
-		/// <returns>The sprite.</returns>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="cols">Cols.</param>
-		/// <param name="rows">Rows.</param>
-		/// <param name="data">Data.</param>
-		public ISpectrumScreen DrawSprite(int x, int y, int cols, int rows, params byte[] data)
-		{
-			int offset = 0;
+        /// <summary>
+        /// Draw a sprite at the given position.
+        /// </summary>
+        /// <returns>The sprite.</returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="cols">Cols.</param>
+        /// <param name="rows">Rows.</param>
+        /// <param name="data">Data.</param>
+        public void DrawSprite(int x, int y, int cols, int rows, params byte[] data)
+        {
+            if (_spriteFormat == SpriteFormat.ColumnOrder)
+            {
+                DrawColumnOrderSprite(x, y, cols, rows, data);
+            }
+            else
+            {
+                DrawRowOrderSprite(x, y, cols, rows, data);
+            }
+        }
 
-			int most = _spriteFormat == SpriteFormat.ColumnOrder ? x : y;
-			int least = _spriteFormat == SpriteFormat.ColumnOrder ? y : x;
-
-			//if (_spriteFormat == SpriteFormat.ColumnOrder) 
-			//{
-				for (int i = most; i < most + cols; i++)
-					for (int j = least; j < least + rows; j++) 
-					{
-						for (int r = 0; r < 8; r++) {
-							Poke (i, j, r, data [r + offset]);
-						}
-
-						offset += 8;
-						offset %= data.Length;
-					}
-			//} 
-			/*else if (_spriteFormat == SpriteFormat.RowOrder) 
-			{
-				for (int j = y; j < y + rows; j++)
-					for (int i = x; i < x + cols; i++)
-					{
-						for (int r = 0; r < 8; r++) {
-							Poke (i, j, r, data [r + offset]);
-						}
-
-						offset += 8;
-						offset %= data.Length;
-					}
-			}*/
-
-			return this;
-		}
-			
-		/// <summary>
-		/// Sets the attribute.
-		/// </summary>
-		/// <returns>The attribute.</returns>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="index">Index.</param>
-		/// <param name="bright">If set to <c>true</c> bright.</param>
-		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		public ISpectrumScreen SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
+        /// <summary>
+        /// Sets the attribute.
+        /// </summary>
+        /// <returns>The attribute.</returns>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="index">Index.</param>
+        /// <param name="bright">If set to <c>true</c> bright.</param>
+        /// <param name="flashing">If set to <c>true</c> flashing.</param>
+        public void SetAttribute(int x, int y, int ink, int paper, bool bright = false, bool flashing = false)
 		{
 			if (x < 0 || x >= 32)
 				throw new IndexOutOfRangeException ("X value out of range");
@@ -229,14 +196,17 @@ namespace Com.SloanKelly.ZXSpectrum
 				throw new IndexOutOfRangeException ("Y value out of range");
 
 			SetAttributeX (x, y, ink, paper, bright, flashing);
-
-			return this;
 		}
+        
+        public void SetAttribute(int x, int y, ZXAttribute attr)
+        {
+            SetAttribute(x, y, attr.Ink, attr.Paper, attr.Bright, attr.Flashing);
+        }
 
-		/// <summary>
-		/// Initialized the texture.
-		/// </summary>
-		void Awake () 
+        /// <summary>
+        /// Initialized the texture.
+        /// </summary>
+        void Awake () 
 		{
 			// Create the texture
 			_tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
@@ -343,5 +313,61 @@ namespace Com.SloanKelly.ZXSpectrum
 			_attrs [x, y].Bright = bright;
 			_attrs [x, y].Flashing = flashing;	
 		}
-	}
+
+        /// <summary>
+        /// This was the old DrawSprite, let's leave it as-is for now.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="cols"></param>
+        /// <param name="rows"></param>
+        /// <param name="data"></param>
+        private void DrawColumnOrderSprite(int x, int y, int cols, int rows, byte[] data)
+        {
+            int offset = 0;
+
+            int most = _spriteFormat == SpriteFormat.ColumnOrder ? x : y;
+            int least = _spriteFormat == SpriteFormat.ColumnOrder ? y : x;
+
+            for (int i = most; i < most + cols; i++)
+            {
+                for (int j = least; j < least + rows; j++)
+                {
+                    for (int r = 0; r < 8; r++)
+                    {
+                        Poke(i, j, r, data[r + offset]);
+                    }
+
+                    offset += 8;
+                    offset %= data.Length;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Draw row-order sprite.
+        /// </summary>
+        /// <param name="x">X-</param>
+        /// <param name="y">Y-</param>
+        /// <param name="cols"># Columns (characters)</param>
+        /// <param name="rows"># Rows (characters)</param>
+        /// <param name="data">Shape data</param>
+        private void DrawRowOrderSprite(int x, int y, int cols, int rows, byte[] data)
+        {
+            int index = 0;
+
+            for (int yy = y; yy < y + rows; yy++)
+            {
+                for (int row = 0; row < 8; row++)
+                {
+                    for (int xx = x; xx < x + cols; xx++)
+                    {
+                        Poke(xx, yy, row, data[index]);
+                        index++;
+                    }
+                }
+            }
+        }
+
+    }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,10 @@ public class RoomData
 
     public CellPoint MinerWillyStart { get; set; }
 
+    public Portal Portal { get; set; }
+
+    public byte[] KeyShape { get; set; }
+
     public RoomData()
     {
         _attrs = new int[32 * 16];
@@ -26,5 +31,10 @@ public class RoomData
     public void SetAttr(int x, int y, int attr)
     {
         _attrs[y * 32 + x] = attr;
+    }
+
+    internal void AddPortal(byte portalColour, byte[] portalShape, int x, int y)
+    {
+        Portal = new Portal(portalColour, portalShape, x, y);
     }
 }

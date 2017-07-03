@@ -60,13 +60,27 @@ public class RoomRenderer : MonoBehaviour
             }
         }
         
+        for (int py = 0; py < 2; py++)
+        {
+            for (int px = 0; px < 2; px++)
+            {
+                screen.SetAttribute(data.Portal.X + px, data.Portal.Y + py, data.Portal.Attr);
+            }
+        }
+        
+        foreach (var key in data.RoomKeys)
+        {
+            screen.SetAttribute(key.Position.X, key.Position.Y, 2, 0, true, false);
+            screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, data.KeyShape);
+        }
+
+
+        screen.RowOrderSprite();
+        screen.DrawSprite(data.Portal.X, data.Portal.Y, 2, 2, data.Portal.Shape);
+
         //CellPoint pt = data.MinerWillyStart;
         ////AddSprite("Miner Willy Start", pt.ToVector3(), minerStartTemp);
 
-        //foreach (var key in data.RoomKeys)
-        //{
-        //    //AddSprite("Key", key.Position.ToVector3(), roomKeyTemp);
-        //}
 
         //// HACK: This does not belong here!
         //charScreen.PrintAt(data.RoomName, 0, 16);

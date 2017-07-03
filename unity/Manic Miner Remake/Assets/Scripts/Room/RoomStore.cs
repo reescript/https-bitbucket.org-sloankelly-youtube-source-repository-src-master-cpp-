@@ -37,7 +37,7 @@ public class RoomStore : MonoBehaviour
     void ImportRoom(SnapshotImporter importer)
     {
         RoomData data = new RoomData();
-
+        
         // Read in the screen attributes
         byte[] buf = importer.ReadBytes(512);
         int i = 0;
@@ -65,18 +65,8 @@ public class RoomStore : MonoBehaviour
         {
             // Read in the first byte that represents the attribute
             byte attr = importer.Read();
-
-            //// Read in the next 8 bytes that represent the shape
-            //SpriteTexture tex = new SpriteTexture(8, 8, new Vector2(0, 1));
-            //tex.Clear(new Color(0, 0, 0, 0));
-            //for (int y = 0; y < 8;y++)
-            //{
-            //    tex.SetLine(y, importer.Read());
-            //}
-
             byte[] blockData = importer.ReadBytes(8);
-
-            data.Blocks[attr] = blockData; // tex.Apply();
+            data.Blocks[attr] = blockData;
         }
 
         // Read Miner Willy's start position
@@ -99,24 +89,53 @@ public class RoomStore : MonoBehaviour
         importer.ReadBytes(4);
 
         // TODO: Border colour
-        importer.Read();
+        int borderColour = importer.Read();
 
         // TODO: Import the positions of the items
+        bool addKey = true;
         for (var j = 0; j < 5; j++)
         {
             byte attr = importer.Read();
-            if (attr == 255) break;
-            if (attr == 0) continue;
+            //if (attr == 255) addKey = false;
+            //if (attr == 0) addKey = false;
 
             byte secondGfxBuf = importer.Read();
             short keyPosRaw = importer.ReadShort();
             CellPoint keyPos = new CellPoint(keyPosRaw.GetX(), keyPosRaw.GetY());
 
             // read dummy byte
-            importer.Read();
+            int dummy = importer.Read();
 
-            data.RoomKeys.Add(new RoomKey(attr, keyPos));
+            if (addKey)
+            {
+                data.RoomKeys.Add(new RoomKey(attr, keyPos));
+            }
+
+            addKey = true;
         }
+
+        /*
+         * Offset 628 is set at 0 in all Manic Miner rooms. Its counterpart in the runtime work area 
+         * (see Appendix F) "is used to decide whether or not all the items have yet been collected; 
+         * just before the items are displayed it is set to zero, then when an uncollected item is 
+         * displayed, it is changed to the attribute of that item. Thus, after printing items, if 
+         * this byte is still zero then all items must have been collected." [Garry Lancaster]
+
+            Offset 654 is always set at 255. 
+         */
+        byte d1 = importer.Read();
+        byte d2 = importer.Read();
+
+        // PORTAL
+        byte portalColour = importer.Read();
+        byte[] portalShape = importer.ReadBytes(32);
+        
+        short portalPosRaw = importer.ReadShort();
+        importer.ReadShort(); // Bit of a fudge, because we're gonna ignore the SECOND short...
+
+        data.AddPortal(portalColour, portalShape, portalPosRaw.GetX(), portalPosRaw.GetY());
+
+        data.KeyShape = importer.ReadBytes(8);
 
         _rooms.Add(data);
     }
