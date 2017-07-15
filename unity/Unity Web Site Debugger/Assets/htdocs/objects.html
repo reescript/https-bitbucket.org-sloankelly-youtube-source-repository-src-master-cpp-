@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<body onLoad="setupPage()">
+
+<canvas id="myCanvas" width="100" height="100" style="border:1px solid #000000;">
+</canvas>
+
+<div id="demo">
+  <h2>Wait for it...</h2>
+</div>
+
+<script>
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+
+function setupPage()
+{
+	setInterval(loadDoc, 500);
+}
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     // document.getElementById("demo").innerHTML = this.responseText;
+
+	var objs = JSON.parse(this.responseText);
+
+	
+	ctx.fillStyle="#FFFFFF";
+	ctx.fillRect(0, 0, c.width, c.height);
+
+	ctx.save();
+	ctx.fillStyle="#000000";
+	ctx.translate(c.width / 2, c.height / 2);
+
+	for (var i = 0; i < objs.objects.length; i++)
+	{
+		var obj = objs.objects[i];
+
+		//ctx.font = "8px Arial";
+		//ctx.fillText(obj.name, obj.pos.x, -obj.pos.z);
+
+		ctx.fillStyle = "#FF0000";
+
+		if (obj.pos.x < 0)
+		{
+			ctx.fillStyle = "#FF00FF";
+		}
+
+		
+		ctx.fillRect(obj.pos.x, -obj.pos.z, 4, 4);
+	}
+
+	document.getElementById("demo").innerHTML = this.responseText;
+
+	ctx.restore();
+
+    }
+  };
+  xhttp.open("GET", "http://localhost:8080/mygame/objects", true);
+  xhttp.send();
+}
+</script>
+
+</body>
+</html>
