@@ -11,8 +11,11 @@ namespace Com.SloanKelly.ZXSpectrum
 		// True if flashing squares are to invert their ink/paper colours
 		bool inverse = false;
 
-		// Flashing timer
-		float inverseTime = 0f;
+        // The ZX Spectrum font
+        byte[] charSet;
+
+        // Flashing timer
+        float inverseTime = 0f;
 
 		// Origin of the screen, top left or bottom left. For pixel drawing only. Attributes origin is always top left.
 		enum Origin
@@ -71,12 +74,15 @@ namespace Com.SloanKelly.ZXSpectrum
 		// The draw order for the sprites
 		SpriteFormat _spriteFormat = SpriteFormat.ColumnOrder;
 
-		/// <summary>
-		/// The Spectrum screen represented as a Texture that can be attached to a sprite. I recommend using a 1-unit-per-pixel size and an
-		/// orthogonal camera size 96; this matches the height of the 192-unit height screen.
-		/// </summary>
-		/// <value>The texture.</value>
-		public Texture2D Texture { get { return _tex; } }
+        [Tooltip("The char set resource file name")]
+        public string charSetResource = "charset";
+
+        /// <summary>
+        /// The Spectrum screen represented as a Texture that can be attached to a sprite. I recommend using a 1-unit-per-pixel size and an
+        /// orthogonal camera size 96; this matches the height of the 192-unit height screen.
+        /// </summary>
+        /// <value>The texture.</value>
+        public Texture2D Texture { get { return _tex; } }
 
         /// <summary>
         /// Poke the specified byte at x, y, and row.
@@ -139,11 +145,28 @@ namespace Com.SloanKelly.ZXSpectrum
 			_drawMode = DrawMode.Or;
 		}
 
-		/// <summary>
-		/// Set the sprite draw to column order.
-		/// </summary>
-		/// <returns>The order sprite.</returns>
-		public void ColumnOrderSprite()
+        public void PrintMessage(int x, int y, string msg)
+        {
+            int ptr = (y * 256) + x;
+
+            foreach (var ch in msg)
+            {
+                int ptrCopy = ptr;
+
+                int offsetIntoCharset = (ch - ' ') * 8;
+
+                byte[] charBlock = new byte[8];
+                Array.Copy(charSet, offsetIntoCharset, charBlock, 0, 8);
+                DrawSprite(x, y, 1, 1, charBlock);
+                x++;
+            }
+        }
+
+        /// <summary>
+        /// Set the sprite draw to column order.
+        /// </summary>
+        /// <returns>The order sprite.</returns>
+        public void ColumnOrderSprite()
 		{
 			_spriteFormat = SpriteFormat.ColumnOrder;
 		}
@@ -208,8 +231,11 @@ namespace Com.SloanKelly.ZXSpectrum
         /// </summary>
         void Awake () 
 		{
-			// Create the texture
-			_tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
+            // Load the Spectrum font
+            LoadCharSet();
+
+            // Create the texture
+            _tex = new Texture2D (256, 192, TextureFormat.RGBA32, false, false);
 			_tex.filterMode = FilterMode.Point;
 
 			// The attributes section of the screen
@@ -218,7 +244,7 @@ namespace Com.SloanKelly.ZXSpectrum
 			// The pixels
 			_pixels = new bool[256, 192];
 
-			ClearX (7, 0, false, false);
+			Clear(7, 0, false, false);
 		}
 
 		/// <summary>
@@ -278,7 +304,7 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="paper">Paper.</param>
 		/// <param name="bright">If set to <c>true</c> bright.</param>
 		/// <param name="flashing">If set to <c>true</c> flashing.</param>
-		private void ClearX(int ink, int paper, bool bright, bool flashing = false)
+		public void Clear(int ink, int paper, bool bright, bool flashing = false)
 		{
 			for (int y = 0; y < 24; y++) 
 			{
@@ -367,6 +393,21 @@ namespace Com.SloanKelly.ZXSpectrum
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Load the character set into memory.
+        /// </summary>
+        private void LoadCharSet()
+        {
+            // Load the resource from disk
+            var ta = Resources.Load<TextAsset>(charSetResource);
+
+            // Reserve memory to load the charset 
+            charSet = new byte[ta.bytes.Length];
+
+            // Copy the loaded charset into the member field buffer
+            Array.Copy(ta.bytes, charSet, ta.bytes.Length);
         }
 
     }

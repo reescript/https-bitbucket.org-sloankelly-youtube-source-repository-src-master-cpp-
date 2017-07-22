@@ -1,140 +1,140 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
+﻿//using System;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class CharScreen : MonoBehaviour
-{
-    //class TextMessage
-    //{
-    //    public string Message { get; private set; }
+//public class CharScreen : MonoBehaviour
+//{
+//    class TextMessage
+//    {
+//        public string Message { get; private set; }
 
-    //    public int X { get; private set; }
+//        public int X { get; private set; }
 
-    //    public int Y { get; private set; }
+//        public int Y { get; private set; }
 
-    //    public TextMessage(string msg, int x, int y)
-    //    {
-    //        Message = msg;
-    //        X = x;
-    //        Y = y;
-    //    }
-    //}
+//        public TextMessage(string msg, int x, int y)
+//        {
+//            Message = msg;
+//            X = x;
+//            Y = y;
+//        }
+//    }
 
-    //List<TextMessage> messages;
-    
-    //Texture2D tex;
+//    List<TextMessage> messages;
 
-    //byte[] charSet;
+//    Texture2D tex;
 
-    //[Tooltip("The char set resource file name")]
-    //public string charSetResource = "charset";
+//    byte[] charSet;
 
-    //[Tooltip("The pixel perfect material")]
-    //public Material pixelPerfect;
+//    //[Tooltip("The char set resource file name")]
+//    //public string charSetResource = "charset";
 
-    //public SpriteRenderer target;
+//    [Tooltip("The pixel perfect material")]
+//    public Material pixelPerfect;
 
-    //public void Cls(bool clearMessages = false)
-    //{
-    //    // Remove any messages that are in the queue to be displayed
-    //    if (clearMessages) messages.Clear();
+//    public SpriteRenderer target;
 
-    //    //Fill the spectrum screen with transparency
-    //    Color[] fill = tex.GetPixels();
-    //    Array.ForEach(fill, (c) => c = new Color(0, 0, 0, 0));
+//    public void Cls(bool clearMessages = false)
+//    {
+//        // Remove any messages that are in the queue to be displayed
+//        if (clearMessages) messages.Clear();
 
-    //    tex.SetPixels(fill);
-    //    tex.Apply();
-    //}
+//        //Fill the spectrum screen with transparency
+//        Color[] fill = tex.GetPixels();
+//        Array.ForEach(fill, (c) => c = new Color(0, 0, 0, 0));
 
-    //public void PrintAt(string msg, int x, int y) // x <= 31, y <=23
-    //{
-    //    messages.Add(new TextMessage(msg, x, y));
-    //}
+//        tex.SetPixels(fill);
+//        tex.Apply();
+//    }
 
-    //void Awake()
-    //{
-    //    messages = new List<TextMessage>();
+//    public void PrintAt(string msg, int x, int y) // x <= 31, y <=23
+//    {
+//        messages.Add(new TextMessage(msg, x, y));
+//    }
 
-    //    LoadCharSet();
-    //    CreateTexture();
+//    void Awake()
+//    {
+//        messages = new List<TextMessage>();
 
-    //    target.material = pixelPerfect;
-    //}
+//        LoadCharSet();
+//        CreateTexture();
 
-    //public void ApplyText()
-    //{
-    //    Cls();
+//        target.material = pixelPerfect;
+//    }
 
-    //    List<Color> pixels = new List<Color>(tex.GetPixels());
+//    public void ApplyText()
+//    {
+//        Cls();
 
-    //    foreach (var msg in messages)
-    //    {
-    //        PrintMessage(pixels, msg.Message, msg.X * 8, (23 - msg.Y) * 8);
-    //    }
+//        List<Color> pixels = new List<Color>(tex.GetPixels());
 
-    //    tex.SetPixels(pixels.ToArray());
-    //    tex.Apply();
+//        foreach (var msg in messages)
+//        {
+//            PrintMessage(pixels, msg.Message, msg.X * 8, (23 - msg.Y) * 8);
+//        }
 
-    //    target.sprite = Sprite.Create(tex, new Rect(0, 0, 256, 192), new Vector2(0, 1), 1);
-    //}
+//        tex.SetPixels(pixels.ToArray());
+//        tex.Apply();
 
-    ////Texture2D Apply()
-    ////{
-    ////    ApplyText();
-    ////    return tex;
-    ////}
+//        target.sprite = Sprite.Create(tex, new Rect(0, 0, 256, 192), new Vector2(0, 1), 1);
+//    }
 
-    //private void PrintMessage(List<Color> pixels, string msg, int x, int y)
-    //{
-    //    int ptr = (y * 256) + x;
+//    //Texture2D Apply()
+//    //{
+//    //    ApplyText();
+//    //    return tex;
+//    //}
 
-    //    foreach (var ch in msg)
-    //    {
-    //        int ptrCopy = ptr;
+//    private void PrintMessage(List<Color> pixels, string msg, int x, int y)
+//    {
+//        int ptr = (y * 256) + x;
 
-    //        int offsetIntoCharset = (ch - ' ') * 8;
+//        foreach (var ch in msg)
+//        {
+//            int ptrCopy = ptr;
 
-    //        for (int c = 0; c < 8; c++)
-    //        {
-    //            int lineValue = offsetIntoCharset + (7-c);
+//            int offsetIntoCharset = (ch - ' ') * 8;
 
-    //            for (int i = 0; i < 8; i++)
-    //            {
-    //                int pow = 7 - i;
-    //                byte mask = (byte)(1 << pow);
+//            for (int c = 0; c < 8; c++)
+//            {
+//                int lineValue = offsetIntoCharset + (7 - c);
 
-    //                if ((charSet[lineValue] & mask) == mask)
-    //                {
-    //                    pixels[ptr + i] = Color.white;
-    //                }
-    //            }
+//                for (int i = 0; i < 8; i++)
+//                {
+//                    int pow = 7 - i;
+//                    byte mask = (byte)(1 << pow);
 
-    //            ptr += 256;
-    //        }
+//                    if ((charSet[lineValue] & mask) == mask)
+//                    {
+//                        pixels[ptr + i] = Color.white;
+//                    }
+//                }
 
-    //        ptr = ptrCopy;
-    //        ptr += 8;
-    //    }
-    //}
+//                ptr += 256;
+//            }
 
-    //private void CreateTexture()
-    //{
-    //    // Create the texture that represents the text mode of the Speccy
-    //    tex = new Texture2D(256, 256, TextureFormat.RGBA32, false);
-    //    tex.filterMode = FilterMode.Point;
-    //    Cls(true);
-    //}
+//            ptr = ptrCopy;
+//            ptr += 8;
+//        }
+//    }
 
-    //private void LoadCharSet()
-    //{
-    //    // Load the resource from disk
-    //    var ta = Resources.Load<TextAsset>(charSetResource);
+//    private void CreateTexture()
+//    {
+//        // Create the texture that represents the text mode of the Speccy
+//        tex = new Texture2D(256, 256, TextureFormat.RGBA32, false);
+//        tex.filterMode = FilterMode.Point;
+//        Cls(true);
+//    }
 
-    //    // Reserve memory to load the charset 
-    //    charSet = new byte[ta.bytes.Length];
+//    //private void LoadCharSet()
+//    //{
+//    //    // Load the resource from disk
+//    //    var ta = Resources.Load<TextAsset>(charSetResource);
 
-    //    // Copy the loaded charset into the member field buffer
-    //    Array.Copy(ta.bytes, charSet, ta.bytes.Length);
-    //}
-}
+//    //    // Reserve memory to load the charset 
+//    //    charSet = new byte[ta.bytes.Length];
+
+//    //    // Copy the loaded charset into the member field buffer
+//    //    Array.Copy(ta.bytes, charSet, ta.bytes.Length);
+//    //}
+//}

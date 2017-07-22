@@ -21,6 +21,8 @@ public class RoomData
 
     public byte[] KeyShape { get; set; }
 
+    public AirSupply AirSupply { get; set; }
+    
     public RoomData()
     {
         _attrs = new int[32 * 16];
