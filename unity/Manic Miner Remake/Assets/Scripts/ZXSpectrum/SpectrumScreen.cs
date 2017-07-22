@@ -200,7 +200,7 @@ namespace Com.SloanKelly.ZXSpectrum
                 DrawRowOrderSprite(x, y, cols, rows, data);
             }
         }
-
+        
         /// <summary>
         /// Sets the attribute.
         /// </summary>
