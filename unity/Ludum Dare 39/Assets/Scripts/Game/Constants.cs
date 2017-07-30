@@ -1,5 +1,12 @@
 ﻿public static class Constants 
 {
+    public static class Time
+    {
+        public static readonly int Hours = 10;
+        public static readonly int Minutes = 0;
+        public static readonly float Ticker = 0.5f;
+    }
+
     public static class Objects
     {
         public const int Floor = 0;

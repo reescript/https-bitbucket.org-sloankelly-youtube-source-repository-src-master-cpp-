@@ -4,8 +4,8 @@ using System.Collections;
 public class RescueTimeCounter : PropertyChangedBehaviour
 {
     bool running = true;
-    int hours = 23;
-    int minutes = 59;
+    int hours = Constants.Time.Hours;
+    int minutes = Constants.Time.Minutes;
 
     public bool Running { get { return running; } }
 
@@ -17,10 +17,10 @@ public class RescueTimeCounter : PropertyChangedBehaviour
     {
         while (running)
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(Constants.Time.Ticker);
 
             minutes--;
-            if (minutes == 0)
+            if (minutes == -1)
             {
                 hours--;
                 if (hours == -1)

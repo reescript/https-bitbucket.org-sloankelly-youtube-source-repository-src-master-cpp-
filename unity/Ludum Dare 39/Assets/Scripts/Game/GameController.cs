@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerStatistics))]
 [RequireComponent(typeof(SpawnSerializer))]
 [RequireComponent(typeof(GameCanvasController))]
+[RequireComponent(typeof(SoundController))]
 public class GameController : MonoBehaviour
 {
     const int TREE_OXYGEN = 5;
@@ -28,11 +29,14 @@ public class GameController : MonoBehaviour
     BlockRenderer blockRenderer;
     SpawnSerializer spawnSerializer;
     GameCanvasController canvasController;
+    SoundController sounds;
     Dictionary<int, int> treeHealth = new Dictionary<int, int>();
     Dictionary<int, Action<int, int>> interactions = new Dictionary<int, Action<int, int>>();
     int[,] map;
 
     VectorI2 playerPos = new VectorI2(50, 45);
+
+    public RescueTimeCounter counter;
 
     public void MoveEast()
     {
@@ -63,8 +67,9 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         CreateInteractions();
+        StartCoroutine(KeepEyeOnTimer());
     }
-
+    
     void Start()
     {
         var mapGenerator = GetComponent<MapGenerator>();
@@ -72,6 +77,7 @@ public class GameController : MonoBehaviour
         stats = GetComponent<PlayerStatistics>();
         spawnSerializer = GetComponent<SpawnSerializer>();
         canvasController = GetComponent<GameCanvasController>();
+        sounds = GetComponent<SoundController>();
         map = mapGenerator.Generate(90, 90);
 
         Func<Spawn, VectorI2> GetStart = (s) =>
@@ -108,6 +114,8 @@ public class GameController : MonoBehaviour
             {
                 stats.Batteries++;
                 map[playerPos.X, playerPos.Y] = Constants.Objects.Floor;
+                sounds.PickUpBattery();
+                blockRenderer.SpawnBattery(playerPos.X, playerPos.Y);
             }
 
             blockRenderer.SetCurrentPosition(playerPos.X, playerPos.Y);
@@ -156,11 +164,14 @@ public class GameController : MonoBehaviour
 
             stats.Oxygen--;
 
+            sounds.FireWeapon();
+
             if (treeHealth[hashCode] == 0)
             {
                 // Replace with floor
                 map[x, y] = Constants.Objects.Floor;
                 stats.Oxygen += TREE_OXYGEN;
+                sounds.TreeDestroyed();
             }
 
             blockRenderer.SpawnExplosion(x, y);
@@ -173,6 +184,12 @@ public class GameController : MonoBehaviour
             stats.Batteries--;
             stats.Radio += Constants.Energy.Volts;
             blockRenderer.SpawnBattery(x, y);
+            sounds.PowerUpRadio();
+
+            if (stats.Radio == 100)
+            {
+                sounds.RadioFull();
+            }
         };
     }
 
@@ -185,6 +202,7 @@ public class GameController : MonoBehaviour
         }
 
         canvasController.DoOxygenDeath();
+        sounds.MissionFailed();
     }
 
     private IEnumerator RunDownRadio()
@@ -193,6 +211,24 @@ public class GameController : MonoBehaviour
         {
             yield return new WaitForSeconds(Constants.Energy.BatteryLossDelay);
             stats.Radio -= Constants.Energy.VoltageLoss;
+        }
+    }
+
+    private IEnumerator KeepEyeOnTimer()
+    {
+        while (counter.Running)
+        {
+            yield return null;
+        }
+
+        if (stats.Radio < 40)
+        {
+            canvasController.DoNoRescue();
+            sounds.MissionFailed();
+        }
+        else
+        {
+            canvasController.DoRescued();
         }
     }
 }
