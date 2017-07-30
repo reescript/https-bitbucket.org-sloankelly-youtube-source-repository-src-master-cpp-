@@ -25,8 +25,13 @@ public class MapGenerator : MonoBehaviour
 
     private int GetFloorOrRandomObject()
     {
-        if (Random.Range(0.0f, 1.0f) > 0.9f)
-            return Constants.Objects.Tree; // It's a tREEz
+        var num = Random.Range(0.0f, 1.0f);
+
+        if (num > 0.99f)
+            return Constants.Objects.Battery;
+
+        if (num > 0.9f)
+            return Constants.Objects.Tree;
 
         return FLOOR;
     }

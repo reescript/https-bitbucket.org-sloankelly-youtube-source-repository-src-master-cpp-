@@ -6,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(MapGenerator))]
 [RequireComponent(typeof(BlockRenderer))]
 [RequireComponent(typeof(PlayerStatistics))]
+[RequireComponent(typeof(SpawnSerializer))]
+[RequireComponent(typeof(GameCanvasController))]
 public class GameController : MonoBehaviour
 {
     const int TREE_OXYGEN = 5;
@@ -24,6 +26,8 @@ public class GameController : MonoBehaviour
 
     PlayerStatistics stats;
     BlockRenderer blockRenderer;
+    SpawnSerializer spawnSerializer;
+    GameCanvasController canvasController;
     Dictionary<int, int> treeHealth = new Dictionary<int, int>();
     Dictionary<int, Action<int, int>> interactions = new Dictionary<int, Action<int, int>>();
     int[,] map;
@@ -66,11 +70,30 @@ public class GameController : MonoBehaviour
         var mapGenerator = GetComponent<MapGenerator>();
         blockRenderer = GetComponent<BlockRenderer>();
         stats = GetComponent<PlayerStatistics>();
+        spawnSerializer = GetComponent<SpawnSerializer>();
+        canvasController = GetComponent<GameCanvasController>();
         map = mapGenerator.Generate(90, 90);
+
+        Func<Spawn, VectorI2> GetStart = (s) =>
+        {
+            int rndId = UnityEngine.Random.Range(0, s.spawnPoints.Count);
+            SpawnPoint sp = s.spawnPoints[rndId];
+
+            var vec = new VectorI2((int)sp.playerSpawn.x, (int)sp.playerSpawn.y);
+            map[vec.X, vec.Y] = Constants.Objects.Floor;
+
+            var vecRadio = new VectorI2((int)sp.radioSpawn.x, (int)sp.radioSpawn.y);
+            map[vecRadio.X, vecRadio.Y] = Constants.Objects.Radio;
+
+            return vec;
+        };
+
+        playerPos = GetStart(spawnSerializer.GetSpawn());
 
         blockRenderer.Initialize(SquareIsValid, map, playerPos.X, playerPos.Y);
 
         StartCoroutine(ReduceOxygen());
+        StartCoroutine(RunDownRadio());
     }
 
     private void PerformMove(Func<VectorI2, VectorI2> desiredPosition)
@@ -80,6 +103,13 @@ public class GameController : MonoBehaviour
         if (MoveIsValid(desiredPosition))
         {
             playerPos = desiredPosition(playerPos);
+
+            if (map[playerPos.X, playerPos.Y] == Constants.Objects.Battery)
+            {
+                stats.Batteries++;
+                map[playerPos.X, playerPos.Y] = Constants.Objects.Floor;
+            }
+
             blockRenderer.SetCurrentPosition(playerPos.X, playerPos.Y);
             stats.Steps++;
         }
@@ -103,7 +133,8 @@ public class GameController : MonoBehaviour
         VectorI2 temp = func(playerPos);
         if (SquareIsValid(temp.X, temp.Y))
         {
-            return map[temp.X, temp.Y] == 0;
+            return map[temp.X, temp.Y] == Constants.Objects.Floor || 
+                   (map[temp.X, temp.Y] == Constants.Objects.Battery && stats.Batteries < Constants.Energy.MaxCarryBattery);
         }
 
         return false;
@@ -128,20 +159,40 @@ public class GameController : MonoBehaviour
             if (treeHealth[hashCode] == 0)
             {
                 // Replace with floor
-                map[x, y] = 0; // make it a floor
+                map[x, y] = Constants.Objects.Floor;
                 stats.Oxygen += TREE_OXYGEN;
             }
 
             blockRenderer.SpawnExplosion(x, y);
         };
+
+        interactions[Constants.Objects.Radio] = (x, y) =>
+        {
+            if (stats.Batteries == 0) return;
+
+            stats.Batteries--;
+            stats.Radio += Constants.Energy.Volts;
+            blockRenderer.SpawnBattery(x, y);
+        };
     }
 
     private IEnumerator ReduceOxygen()
     {
-        while (stats.Oxygen >0)
+        while (stats.Oxygen > 0)
         {
-            yield return new WaitForSeconds(Constants.Energy.OxygenLoss);
+            yield return new WaitForSeconds(Constants.Energy.OxygenLossDelay);
             stats.Oxygen--;
+        }
+
+        canvasController.DoOxygenDeath();
+    }
+
+    private IEnumerator RunDownRadio()
+    {
+        while (stats.Oxygen > 0)
+        {
+            yield return new WaitForSeconds(Constants.Energy.BatteryLossDelay);
+            stats.Radio -= Constants.Energy.VoltageLoss;
         }
     }
 }

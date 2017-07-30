@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(MapGenerator))]
 public class BlockRenderer : MonoBehaviour
@@ -12,29 +13,26 @@ public class BlockRenderer : MonoBehaviour
     Dictionary<int, GameObject> explosionInstances = new Dictionary<int, GameObject>();
     Func<int, int, bool> SquareIsValid;
     Vector2 currentPosition;
+    Texture2D miniMap;
+
+    public Image miniMapImage;
     
-
-    // 0 - Space
-    // 1 - Floor
-    // 2 - Wall
-    // 3 - Door ?? 
-
     public Sprite[] blocks;
 
     public Sprite[] explosion;
+
+    public Sprite[] battery;
 
     public int[,] map;
 
     public void SpawnExplosion(int x, int y)
     {
-        GameObject go = new GameObject();
-        var sprite = go.AddComponent<SpriteRenderer>();
-        sprite.sprite = explosion[0];
-        sprite.sortingOrder = 50;
-        go.SetActive(true);
-        explosionInstances[Hash.GetHashCode(x, y)] = go;
+        SpawnObject(x, y, explosion);
+    }
 
-        StartCoroutine(DoExplosion(go, x, y));
+    public void SpawnBattery(int x, int y)
+    {
+        SpawnObject(x, y, battery);
     }
 
     public void SetCurrentPosition(int x, int y)
@@ -45,6 +43,7 @@ public class BlockRenderer : MonoBehaviour
 
     public void Initialize(Func<int, int, bool> squareValidation, int[,] theMap, int x, int y)
     {
+        miniMap = new Texture2D(90, 90);
         SquareIsValid = squareValidation;
         map = theMap;
         SetCurrentPosition(x, y);
@@ -71,6 +70,8 @@ public class BlockRenderer : MonoBehaviour
         //}
 
         #endregion
+
+        UpdateMiniMap();
 
         for (int y = -4; y < 5; y++)
         {
@@ -118,14 +119,68 @@ public class BlockRenderer : MonoBehaviour
         }
     }
 
-    private IEnumerator DoExplosion(GameObject go, int x, int y)
+    private void UpdateMiniMap()
+    {
+        var data = miniMap.GetPixels();
+
+        var floorColour = new Color(0.3f, 0.3f, 0.3f);
+
+        for (int y = 0; y < 90; y++)
+        {
+            for (int x = 0; x < 90; x++)
+            {
+                var index = (y * 90) + x;
+
+                switch(map[x, y])
+                {
+                    case Constants.Objects.Floor:
+                        data[index] = floorColour;
+                        break;
+                    case Constants.Objects.WayBelow:
+                        data[index] = Color.black;
+                        break;
+                    case Constants.Objects.Battery:
+                        data[index] = Color.blue;
+                        break;
+                    case Constants.Objects.Tree:
+                        data[index] = Color.green;
+                        break;
+                    case Constants.Objects.Radio:
+                        data[index] = Color.white;
+                        break;
+                }
+
+                if (x == currentPosition.x && y== currentPosition.y)
+                {
+                    data[index] = Color.red;
+                }
+            }
+        }
+
+        miniMap.SetPixels(data);
+        miniMap.Apply();
+        miniMapImage.sprite = Sprite.Create(miniMap, new Rect(0, 0, 90, 90), Vector2.zero);
+    }
+    
+    private void SpawnObject(int x, int y, Sprite[] frames)
+    {
+        GameObject go = new GameObject();
+        var sprite = go.AddComponent<SpriteRenderer>();
+        sprite.sprite = explosion[0];
+        sprite.sortingOrder = 50;
+        go.SetActive(true);
+        explosionInstances[Hash.GetHashCode(x, y)] = go;
+        StartCoroutine(DoExplosion(go, x, y, frames));
+    }
+
+    private IEnumerator DoExplosion(GameObject go, int x, int y, Sprite[] frames)
     {
         var sprite = go.GetComponent<SpriteRenderer>();
 
         int frame = 0;
         while (frame < 3)
         {
-            sprite.sprite = explosion[frame];
+            sprite.sprite = frames[frame];
             yield return new WaitForSeconds(0.06f);
             frame++;
         }
