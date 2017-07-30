@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -6,6 +8,11 @@ public class PlayerMovement : MonoBehaviour
 
     Vector2 mouseStart = Vector2.zero;
     Vector2 mouseEnd = Vector2.zero;
+
+    void Start()
+    {
+        StartCoroutine(KeyboardUpdate());
+    }
 
     void Update()
     {
@@ -36,22 +43,40 @@ public class PlayerMovement : MonoBehaviour
                 gameController.MoveWest();
             }
         }
+    }
+    
+    IEnumerator KeyboardUpdate()
+    {
+        while (true)
+        {
+            Action move = null;
 
-        if (Input.GetKeyUp(KeyCode.D))
-        {
-            gameController.MoveEast();
-        }
-        else if (Input.GetKeyUp(KeyCode.A))
-        {
-            gameController.MoveWest();
-        }
-        else if (Input.GetKeyUp(KeyCode.W))
-        {
-            gameController.MoveNorth();
-        }
-        else if (Input.GetKeyUp(KeyCode.S))
-        {
-            gameController.MoveSouth();
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            {
+                move = () => gameController.MoveEast();
+            }
+            else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            {
+                move = () => gameController.MoveWest();
+            }
+            else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            {
+                move = () => gameController.MoveNorth();
+            }
+            else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+            {
+                move = () => gameController.MoveSouth();
+            }
+
+            if (move != null)
+            {
+                move();
+                yield return new WaitForSeconds(0.25f);
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
 }

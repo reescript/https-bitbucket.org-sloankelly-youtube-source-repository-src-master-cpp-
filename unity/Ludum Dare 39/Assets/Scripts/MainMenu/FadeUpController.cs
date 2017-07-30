@@ -5,20 +5,39 @@ public class FadeUpController : MonoBehaviour
 {
     public CanvasGroup canvas;
 
+    public bool goFromBlack = false;
+    public bool disableAfterFade = false;
+
     IEnumerator Start()
     {
         yield return new WaitForSeconds(0.5f);
 
-        float alpha = 0f;
-        canvas.alpha = alpha;
+        AnimationCurve curve = new AnimationCurve();
 
-        while (alpha < 1f)
+        if (goFromBlack)
         {
-            canvas.alpha = alpha;
-            alpha += Time.deltaTime;
+            curve.AddKey(0f, 1f);
+            curve.AddKey(1f, 0f);
+        }
+        else
+        {
+            curve.AddKey(0f, 0f);
+            curve.AddKey(1f, 1f);
+        }
+
+        float time = 0f;
+        while (time < 1f)
+        {
+            canvas.alpha = curve.Evaluate(time);
+            time += Time.deltaTime;
             yield return null;
         }
 
-        canvas.alpha = 1f;
+        canvas.alpha = curve.Evaluate(1f);
+
+        if (disableAfterFade)
+        {
+            canvas.gameObject.SetActive(false);
+        }
     }
 }

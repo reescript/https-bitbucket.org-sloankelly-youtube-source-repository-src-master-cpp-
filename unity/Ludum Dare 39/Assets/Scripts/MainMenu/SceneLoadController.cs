@@ -1,46 +1,22 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
 
 public class SceneLoadController : MonoBehaviour
 {
     public CanvasGroup mainMenu;
-    
+    public FadeLoadSceneBehaviour fadeLoad;
+
     internal void ShowInstructions()
     {
-        StartCoroutine(LoadScene("Instructions"));
+        fadeLoad.Load(mainMenu, "Instructions");
     }
 
     internal void StartGame()
     {
-        StartCoroutine(LoadScene("Game"));
-    }
-
-    IEnumerator LoadScene(string sceneName)
-    {
-        float alpha = mainMenu.alpha;
-        while (alpha > 0)
-        {
-            mainMenu.alpha = alpha;
-            alpha -= Time.deltaTime;
-
-            yield return null;
-        }
-
-        mainMenu.alpha = 0f;
-
-        if (string.IsNullOrEmpty(sceneName))
-        {
-            Application.Quit();
-        }
-        else
-        {
-            SceneManager.LoadScene(sceneName);
-        }
+        fadeLoad.Load(mainMenu, "Game");
     }
 
     internal void Quit()
     {
-        StartCoroutine(LoadScene(""));
+        fadeLoad.Load(mainMenu, "");
     }
 }

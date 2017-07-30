@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\ComponentModel\Binding\CommandBinding.cs" />
     <Compile Include="Assets\Scripts\ComponentModel\Binding\ImageFillBinding.cs" />
     <Compile Include="Assets\Scripts\ComponentModel\Binding\TextBinding.cs" />
+    <Compile Include="Assets\Scripts\ComponentModel\Converters\DoubleDigitConverter.cs" />
     <Compile Include="Assets\Scripts\ComponentModel\Converters\NormalizedIntegerConverter.cs" />
     <Compile Include="Assets\Scripts\ComponentModel\IValueConverter.cs" />
     <Compile Include="Assets\Scripts\ComponentModel\PropertyChangedBehaviour.cs" />
@@ -99,9 +100,13 @@
     <Compile Include="Assets\Scripts\Game\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Game\PlayerStatistics.cs" />
     <Compile Include="Assets\Scripts\Game\RescueTimeCounter.cs" />
+    <Compile Include="Assets\Scripts\Game\SoundController.cs" />
     <Compile Include="Assets\Scripts\Helpers\Hash.cs" />
     <Compile Include="Assets\Scripts\Helpers\Vector2Extensions.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\FadeLoadSceneBehaviour.cs" />
     <Compile Include="Assets\Scripts\MainMenu\FadeUpController.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\InstructionsMenuButtonController.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\InstructionsMenuController.cs" />
     <Compile Include="Assets\Scripts\MainMenu\MainMenuButtonController.cs" />
     <Compile Include="Assets\Scripts\MainMenu\SceneLoadController.cs" />
     <Compile Include="Assets\Scripts\Settings\Spawn.cs" />

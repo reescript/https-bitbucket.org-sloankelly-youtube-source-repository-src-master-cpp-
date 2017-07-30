@@ -5,10 +5,22 @@ public class GameCanvasController : MonoBehaviour
 {
     public CanvasGroup inGameUI;
     public CanvasGroup oxygenDeath;
+    public CanvasGroup noRescueDeath;
+    public CanvasGroup rescued;
 
     public void DoOxygenDeath()
     {
         StartCoroutine(SwapCanvas(inGameUI, oxygenDeath, 1f, true));
+    }
+    
+    internal void DoNoRescue()
+    {
+        StartCoroutine(SwapCanvas(inGameUI, noRescueDeath, 1f, true));
+    }
+
+    internal void DoRescued()
+    {
+        StartCoroutine(SwapCanvas(inGameUI, rescued, 1f, true));
     }
 
     private IEnumerator SwapCanvas(CanvasGroup first, CanvasGroup second, float duration, bool disable)
