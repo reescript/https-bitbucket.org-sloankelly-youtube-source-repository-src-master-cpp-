@@ -9,6 +9,10 @@ public class PlayerMovement : MonoBehaviour
     Vector2 mouseStart = Vector2.zero;
     Vector2 mouseEnd = Vector2.zero;
 
+    public PlayerAnimationController animationController;
+
+    bool wasMoving = false;
+
     void Start()
     {
         StartCoroutine(KeyboardUpdate());
@@ -67,14 +71,20 @@ public class PlayerMovement : MonoBehaviour
             {
                 move = () => gameController.MoveSouth();
             }
+            else if (Input.GetKey(KeyCode.Escape))
+            {
+                move = gameController.TogglePause;
+            }
 
             if (move != null)
             {
                 move();
+                animationController.Walk();
                 yield return new WaitForSeconds(0.25f);
             }
             else
             {
+                animationController.Stop();
                 yield return null;
             }
         }

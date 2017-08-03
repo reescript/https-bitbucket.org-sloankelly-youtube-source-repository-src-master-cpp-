@@ -14,7 +14,7 @@ public abstract class BindingBaseBehaviour : MonoBehaviour
     public string property;
 
     public string valueConverter;
-    
+
     void Awake()
     {
         propertyInfo = target.GetType().GetProperty(property, BindingFlags.Public | BindingFlags.Instance);
@@ -30,6 +30,13 @@ public abstract class BindingBaseBehaviour : MonoBehaviour
         }
 
         OnAwake();
+
+        var tmp = propertyInfo.GetValue(target, null);
+
+        if (tmp != null)
+        {
+            Target_PropertyChanged(this, new PropertyChangedEventArgs(property));
+        }
     }
 
     private void Target_PropertyChanged(object sender, PropertyChangedEventArgs e)
