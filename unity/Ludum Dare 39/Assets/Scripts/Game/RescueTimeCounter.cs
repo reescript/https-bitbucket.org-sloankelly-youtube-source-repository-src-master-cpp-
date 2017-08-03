@@ -4,6 +4,7 @@ using System.Collections;
 public class RescueTimeCounter : PropertyChangedBehaviour
 {
     bool running = true;
+    bool paused = false;
     int hours = Constants.Time.Hours;
     int minutes = Constants.Time.Minutes;
 
@@ -17,24 +18,36 @@ public class RescueTimeCounter : PropertyChangedBehaviour
     {
         while (running)
         {
-            yield return new WaitForSeconds(Constants.Time.Ticker);
-
-            minutes--;
-            if (minutes == -1)
+            if (paused)
             {
-                hours--;
-                if (hours == -1)
-                {
-                    running = false;
-                }
-                else
-                {
-                    minutes = 59;
-                }
+                yield return null;
             }
+            else
+            {
+                yield return new WaitForSeconds(Constants.Time.Ticker);
 
-            OnPropertyChanged("Hours");
-            OnPropertyChanged("Minutes");
+                minutes--;
+                if (minutes == -1)
+                {
+                    hours--;
+                    if (hours == -1)
+                    {
+                        running = false;
+                    }
+                    else
+                    {
+                        minutes = 59;
+                    }
+                }
+
+                OnPropertyChanged("Hours");
+                OnPropertyChanged("Minutes");
+            }
         }
+    }
+
+    internal void Pause(bool isPaused)
+    {
+        paused = isPaused;
     }
 }

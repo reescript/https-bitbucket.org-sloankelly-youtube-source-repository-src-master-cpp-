@@ -33,10 +33,38 @@ public class GameController : MonoBehaviour
     Dictionary<int, int> treeHealth = new Dictionary<int, int>();
     Dictionary<int, Action<int, int>> interactions = new Dictionary<int, Action<int, int>>();
     int[,] map;
+    bool paused;
 
     VectorI2 playerPos = new VectorI2(50, 45);
 
+    public GameObject inGameMenu;
     public RescueTimeCounter counter;
+
+    public void TogglePause()
+    {
+        if (paused)
+        {
+            ResumeGame();
+        }
+        else
+        {
+            PauseGame();
+        }
+    }
+
+    public void PauseGame()
+    {
+        inGameMenu.SetActive(true);
+        counter.Pause(true);
+        paused = true;
+    }
+
+    public void ResumeGame()
+    {
+        inGameMenu.SetActive(false);
+        counter.Pause(false);
+        paused = false;
+    }
 
     public void MoveEast()
     {
@@ -104,7 +132,7 @@ public class GameController : MonoBehaviour
 
     private void PerformMove(Func<VectorI2, VectorI2> desiredPosition)
     {
-        // TODO: Moving in direction of baddie - shoot first ask questions later
+        if (paused) return;
 
         if (MoveIsValid(desiredPosition))
         {
@@ -197,8 +225,15 @@ public class GameController : MonoBehaviour
     {
         while (stats.Oxygen > 0)
         {
-            yield return new WaitForSeconds(Constants.Energy.OxygenLossDelay);
-            stats.Oxygen--;
+            if (paused)
+            {
+                yield return null;
+            }
+            else
+            {
+                yield return new WaitForSeconds(Constants.Energy.OxygenLossDelay);
+                stats.Oxygen--;
+            }
         }
 
         canvasController.DoOxygenDeath();
@@ -209,8 +244,15 @@ public class GameController : MonoBehaviour
     {
         while (stats.Oxygen > 0)
         {
-            yield return new WaitForSeconds(Constants.Energy.BatteryLossDelay);
-            stats.Radio -= Constants.Energy.VoltageLoss;
+            if (paused)
+            {
+                yield return null;
+            }
+            else
+            {
+                yield return new WaitForSeconds(Constants.Energy.BatteryLossDelay);
+                stats.Radio -= Constants.Energy.VoltageLoss;
+            }
         }
     }
 

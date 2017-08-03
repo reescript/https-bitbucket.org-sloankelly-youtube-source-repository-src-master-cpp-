@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Game\GameButtonController.cs" />
     <Compile Include="Assets\Scripts\Game\GameCanvasController.cs" />
     <Compile Include="Assets\Scripts\Game\GameController.cs" />
+    <Compile Include="Assets\Scripts\Game\PlayerAnimationController.cs" />
     <Compile Include="Assets\Scripts\Game\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Game\PlayerStatistics.cs" />
     <Compile Include="Assets\Scripts\Game\RescueTimeCounter.cs" />

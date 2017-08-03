@@ -5,6 +5,9 @@ public class GameButtonController : PropertyChangedBehaviour
 {
     Action returnToMainMenu;
     Action playAgain;
+    Action resumeGameCommand;
+
+    public GameController gameController;
 
     public Action ReturnToMainMenuCommand
     {
@@ -18,9 +21,16 @@ public class GameButtonController : PropertyChangedBehaviour
         set { playAgain = value; OnPropertyChanged("PlayAgainCommand"); }
     }
 
+    public Action ResumeGameCommand
+    {
+        get { return resumeGameCommand; }
+        set { resumeGameCommand = value; OnPropertyChanged("ResumeGameCommand"); }
+    }
+
     void Start()
     {
         ReturnToMainMenuCommand = () => SceneManager.LoadScene("MainMenu");
         PlayAgainCommand = () => SceneManager.LoadScene("Game");
+        ResumeGameCommand = gameController.ResumeGame;
     }
 }
