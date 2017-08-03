@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomStore : MonoBehaviour
@@ -24,7 +25,7 @@ public class RoomStore : MonoBehaviour
                 importer.Seek(offset);
 
                 // Import Room
-                ImportRoom(importer);
+                ImportRoom(importer, IsSpecialRoom(i));
 
                 // Move to the next room
                 offset += 1024;
@@ -34,7 +35,12 @@ public class RoomStore : MonoBehaviour
         IsReady = true;
     }
 
-    void ImportRoom(SnapshotImporter importer)
+    bool IsSpecialRoom(int i)
+    {
+        return (i >= 0 && i <= 2) || i == 4;
+    }
+
+    void ImportRoom(SnapshotImporter importer, bool hasSpecialGraphic)
     {
         RoomData data = new RoomData();
         
@@ -140,8 +146,66 @@ public class RoomStore : MonoBehaviour
         byte airFirst = importer.Read();
         byte airSize = (byte)((airFirst - 32) - 4);
         byte airPixels = importer.Read();
-
         data.AirSupply = new AirSupply() { Length = airSize, Tip = airPixels };
+
+        // Horizontal guardians
+        for (int h = 0; h < 4; h++) 
+        {
+            // TODO: Check this logic because we are getting black areas top left
+
+            HorizontalGuardian hg = new HorizontalGuardian();
+            hg.Attribute = importer.Read();
+            var pos = importer.ReadShort();
+            hg.StartX = pos.GetX();
+            hg.StartY = pos.GetY();
+            importer.Read(); // ignore this byte
+            hg.StartFrame = importer.Read();
+            hg.Left = importer.Read() & 0x1f;
+            hg.Right = importer.Read() & 0x1f;
+
+            if (hg.Attribute != 255)
+            {
+                data.HorizontalGuardians.Add(hg);
+            }
+        }
+
+        importer.ReadBytes(3); // Always 255, and 0 and 0 Offset 730 is a terminator which is always set at 255, and Offsets 731 and 732 are 0 for all Manic Miner rooms.
+
+        if (hasSpecialGraphic)
+        {
+            importer.ReadBytes(3); // ignore offsets 733, 734 and 736
+
+            byte[] specialGraphic = importer.ReadBytes(32);
+            data.SpecialGraphics.Add(specialGraphic);
+        }
+        else
+        {
+            // TODO: Vertical guardians
+            for (int h = 0; h < 4; h++)
+            {
+                HorizontalGuardian hg = new HorizontalGuardian();
+                hg.Attribute = importer.Read();
+                var pos = importer.ReadShort();
+                hg.StartX = pos.GetX();
+                hg.StartY = pos.GetY();
+                importer.Read(); // ignore this byte
+                hg.StartFrame = importer.Read();
+                hg.Left = importer.Read() & 0x1f;
+                hg.Right = importer.Read() & 0x1f;
+
+                if (hg.Attribute != 0)
+                {
+                    // TODO: NEED TO ADD TO VERTICAL GUARDIANS
+                    //data.HorizontalGuardians.Add(hg);
+                }
+            }
+        }
+
+        for (int sp = 0; sp < 8; sp++)
+        {
+            byte[] shape = importer.ReadBytes(32);
+            data.GuardianGraphics.Add(shape);
+        }
 
         _rooms.Add(data);
     }

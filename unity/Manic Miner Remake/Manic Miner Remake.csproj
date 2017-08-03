@@ -83,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
     <Compile Include="Assets\Scripts\Debug\DebugCreateSprite.cs" />
     <Compile Include="Assets\Scripts\Debug\DebugMode.cs" />
     <Compile Include="Assets\Scripts\Debug\DrawScreen.cs" />
@@ -93,6 +94,8 @@
     <Compile Include="Assets\Scripts\Importer\SpriteTexture.cs" />
     <Compile Include="Assets\Scripts\Room\AirSupply.cs" />
     <Compile Include="Assets\Scripts\Room\CellPoint.cs" />
+    <Compile Include="Assets\Scripts\Room\HorizontalGuardian.cs" />
+    <Compile Include="Assets\Scripts\Room\Mob.cs" />
     <Compile Include="Assets\Scripts\Room\Portal.cs" />
     <Compile Include="Assets\Scripts\Room\RoomData.cs" />
     <Compile Include="Assets\Scripts\Room\RoomKey.cs" />
