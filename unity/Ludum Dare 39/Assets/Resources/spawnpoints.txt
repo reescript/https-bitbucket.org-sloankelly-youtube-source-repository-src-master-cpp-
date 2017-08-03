@@ -1,0 +1,25 @@
+{
+	"spawnPoints":
+		[
+			{
+				"playerSpawn": { "x": 50, "y": 45 },
+				"radioSpawn": { "x": 31, "y": 13 }
+			},
+			{
+				"playerSpawn": { "x": 47, "y": 24 },
+				"radioSpawn": { "x": 24, "y": 10 }
+			},
+			{
+				"playerSpawn": { "x": 68, "y": 74 },
+				"radioSpawn": { "x": 50, "y": 45 }
+			},
+			{
+				"playerSpawn": { "x": 24, "y": 10 },
+				"radioSpawn": { "x": 47, "y": 24 }
+			},
+			{
+				"playerSpawn": { "x": 31, "y": 13 },
+				"radioSpawn": { "x": 24, "y": 10 }
+			}
+		]
+}
