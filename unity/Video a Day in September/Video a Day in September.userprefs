@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{5DB43604-28AE-EDC9-98C8-8A7F7DE357EF}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Day 8/Scripts/Reflector.cs">
+    <Files>
+      <File FileName="Assets/Day 8/Scripts/Reflector.cs" Line="12" Column="35" />
+      <File FileName="Assets/Day 8/Scripts/Player.cs" Line="13" Column="79" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Video_220a_220Day_220in_220September PreferredExecutionTarget="Unity.Editor" />
+</Properties>
