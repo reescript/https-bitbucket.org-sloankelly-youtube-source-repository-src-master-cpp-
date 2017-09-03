@@ -23,18 +23,30 @@ public class RoomRenderer : MonoBehaviour
         sr.sprite = Sprite.Create(screen.Texture, new Rect(0, 0, 256, 192), new Vector2(0, 1), 1f);
     }
 
-    public void DrawScreen(RoomData data, IList<Mob> mobs, string playerScore)
+    public void DrawScreen(RoomData data, MinerWilly minerWilly, IList<Mob> mobs, string playerScore)
     {
         screen.Clear(7, 0, false);
 
+        DrawMinerWilly(minerWilly, data);
         DrawRoom(data);
         DrawItems(data);
         DrawHorizontalGuardians(mobs, data);
         DrawPortal(data); // Make this the last thing drawn in the room
         DrawRoomTitle(data);
-
         DrawAirSupply(data);
         DrawScore(playerScore);
+    }
+
+    private void DrawMinerWilly(MinerWilly m, RoomData data)
+    {
+        int attr = data.Attributes[m.Y * 32 + m.X];
+        attr &= 0xF8; // XXXXX--- - bit pattern
+        attr |= 7;// Miner Willy is always white on whatever background we have
+
+        ZXAttribute attribute = new ZXAttribute((byte)attr);
+
+        screen.FillAttribute(m.X, m.Y, 2, 2, attribute);
+        screen.DrawSprite(m.X, m.Y, 2, 2, m.Frames[m.Frame]);
     }
 
     private void DrawScore(string playerScore)
@@ -81,7 +93,15 @@ public class RoomRenderer : MonoBehaviour
     {
         foreach (var key in data.RoomKeys)
         {
-            screen.SetAttribute(key.Position.X, key.Position.Y, 2, 0, true, false);
+            if (key.Attr == 255) continue;
+
+            int attr = data.Attributes[key.Position.Y * 32 + key.Position.X];
+            attr &= 0xF8; // XXXXX--- - bit pattern
+            attr |= key.Attr;
+
+            ZXAttribute attribute = new ZXAttribute((byte)attr);
+
+            screen.SetAttribute(key.Position.X, key.Position.Y, attribute);
             screen.DrawSprite(key.Position.X, key.Position.Y, 1, 1, data.KeyShape);
         }
     }
@@ -118,7 +138,15 @@ public class RoomRenderer : MonoBehaviour
                     bool flashing = attr.IsFlashing();
 
                     screen.SetAttribute(x, y, ink, paper, bright, flashing);
-                    screen.DrawSprite(x, y, 1, 1, data.Blocks[attr]);
+
+                    if (data.Blocks[attr].BlockType == BlockType.Conveyor)
+                    {
+                        screen.DrawSprite(x, y, 1, 1, data.ConveyorShape);
+                    }
+                    else
+                    {
+                        screen.DrawSprite(x, y, 1, 1, data.Blocks[attr].Shape);
+                    }
                 }
             }
         }
@@ -128,6 +156,8 @@ public class RoomRenderer : MonoBehaviour
     {
         foreach (var g in mobs)
         {
+            if (g.Attribute == 0) continue;
+
             screen.FillAttribute(g.X, g.Y, 2, 2, g.Attribute.GetInk(), g.Attribute.GetPaper());
             screen.DrawSprite(g.X, g.Y, 2, 2, data.GuardianGraphics[g.Frame]);
         }

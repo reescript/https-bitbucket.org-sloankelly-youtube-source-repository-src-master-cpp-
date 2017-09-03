@@ -2,21 +2,38 @@
 using Com.SloanKelly.ZXSpectrum;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(RoomStore))]
 [RequireComponent(typeof(SpectrumScreen))]
 [RequireComponent(typeof(RoomRenderer))]
 public class GameController : MonoBehaviour
 {
-    // Private member fields
+    enum GameState
+    {
+        Playing,
+        MoveToNextCavern,
+        Dead
+    }
 
-    int score = 0;
-    int hiScore = 100;
     const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
-    private RoomData roomData;
-    private bool gameOver;
 
-    List<Mob> mobs = new List<Mob>();
+    const float ENVIRONMENT_SPEED = 0.1f;
+    const float CONVEYOR_SPEED = 0.025f;
+    const float MINER_WILLY_SPEED = 0.1f;
+
+    // Private member fields
+    private int score = 0;
+    private int hiScore = 100;
+    
+    private RoomData roomData;
+    private GameState state;
+    private MinerWilly minerWilly;
+    private List<Mob> mobs = new List<Mob>();
+    private byte[] keyColours = new byte[] { 3, 6, 6, 4 };
+    private int currentKeyColour = 0;
+
+    public Camera mainCamera;
 
     // Public member fields
 
@@ -25,6 +42,16 @@ public class GameController : MonoBehaviour
     
     IEnumerator Start()
     {
+        if (roomId == -1)
+        {
+            roomId = 0;
+        }
+        else
+        {
+            roomId = PlayerPrefs.GetInt("_room");
+            score = PlayerPrefs.GetInt("_score");
+        }
+
         var store = GetComponent<RoomStore>();
         var roomRenderer = GetComponent<RoomRenderer>();
 
@@ -32,13 +59,39 @@ public class GameController : MonoBehaviour
         {
             yield return null;
         }
-
+        
         roomData = store.Rooms[roomId];
 
+        // Get Miner Willy data from store and from the room
+        minerWilly = new MinerWilly(store.MinerWillySprites, roomData.MinerWillyStart.X, roomData.MinerWillyStart.Y, 4, 0, 0, 7);
+
+        // Set up the horizontal guardians
         roomData.HorizontalGuardians.ForEach(g => mobs.Add(new Mob(g)));
+
+        // Set up the conveyor shape
+        foreach (var block in roomData.Blocks.Values)
+        {
+            if (block.BlockType == BlockType.Conveyor)
+            {
+                roomData.ConveyorShape = block.Shape;
+                break;
+            }
+        }
+
+        // Set the border colour
+        mainCamera.backgroundColor = ZXColour.Get(roomData.BorderColour);
+
+        // HACK: Make portal available
+        // REMOVE THIS LATER
+        roomData.Portal.Attr.Flashing = true;
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
+        StartCoroutine(MoveWilly(minerWilly, roomData));
+        StartCoroutine(CycleColours(roomData.RoomKeys));
+        StartCoroutine(UpdateConveyor(roomData));
+        StartCoroutine(CheckPortalCollision(roomData));
+        StartCoroutine(EndOfCavernCheck(roomData));
 
         if ((roomId>=0 && roomId <=6) || roomId==9 || roomId==15)
         {
@@ -46,18 +99,185 @@ public class GameController : MonoBehaviour
         }
     }
 
+    IEnumerator EndOfCavernCheck(RoomData roomData)
+    {
+        while (state == GameState.Playing) yield return null;
+
+        if (state == GameState.MoveToNextCavern)
+        {
+            yield return MoveToNextCavern(roomData);
+        }
+        else
+        {
+            yield return GivePlayerTheBoot(roomData);
+        }
+    }
+
+    IEnumerator MoveToNextCavern(RoomData roomData)
+    {
+        while (roomData.AirSupply.Length > 0)
+        {
+            roomData.AirSupply.Tip = (byte)(roomData.AirSupply.Tip << 1);
+            roomData.AirSupply.Tip = (byte)(roomData.AirSupply.Tip & 0xff);
+
+            if (roomData.AirSupply.Length > 0 && roomData.AirSupply.Tip == 0)
+            {
+                roomData.AirSupply.Length--;
+                roomData.AirSupply.Tip = 255;
+            }
+
+            score += 10;
+
+            yield return null;
+        }
+
+        roomId++;
+        PlayerPrefs.SetInt("_room", roomId);
+        PlayerPrefs.SetInt("_score", score);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    IEnumerator GivePlayerTheBoot(RoomData roomData)
+    {
+        yield return null;
+    }
+
+    IEnumerator CheckPortalCollision(RoomData roomData)
+    {
+        while (state == GameState.Playing)
+        {
+            var willyTouchesPortal = BitCollision.DidCollide2x2(minerWilly.X, minerWilly.Y, minerWilly.Frames[minerWilly.Frame],
+                                     roomData.Portal.X, roomData.Portal.Y, roomData.Portal.Shape);
+
+            if (willyTouchesPortal)
+            {
+                state = GameState.MoveToNextCavern;
+            }
+
+            yield return null;
+        }
+    }
+
+    IEnumerator UpdateConveyor(RoomData roomData)
+    {
+        while(state == GameState.Playing)
+        {
+            byte[] tmp = roomData.ConveyorShape;
+            
+            if (roomData.ConveyorDirection == ConveyorDirection.Left)
+            {
+                tmp[0] = RotateLeft(tmp[0]);
+                tmp[2] = RotateRight(tmp[2]);
+            }
+            else
+            {
+                tmp[0] = RotateRight(tmp[0]);
+                tmp[2] = RotateLeft(tmp[2]);
+            }
+
+            roomData.ConveyorShape = tmp;
+
+            yield return new WaitForSeconds(CONVEYOR_SPEED);
+        }
+    }
+
+    IEnumerator CycleColours(List<RoomKey> roomKeys)
+    {
+        while(state == GameState.Playing)
+        {
+            foreach (var key in roomKeys)
+            {
+                key.Attr = keyColours[currentKeyColour];
+            }
+
+            currentKeyColour++;
+            currentKeyColour %= keyColours.Length;
+
+            yield return new WaitForSeconds(ENVIRONMENT_SPEED);
+        }
+    }
+
+    IEnumerator MoveWilly(MinerWilly minerWilly, RoomData data)
+    {
+        while (state == GameState.Playing)
+        {
+            int attrRight = data.Attributes[minerWilly.Y * 32 + (minerWilly.X + 1)];
+            int attrLeft = data.Attributes[minerWilly.Y * 32 + (minerWilly.X - 1)];
+
+            bool wallToRight = data.Blocks[attrRight].BlockType == BlockType.Wall;
+            bool wallToLeft = data.Blocks[attrLeft].BlockType == BlockType.Wall;
+
+            bool didMove = false;
+
+            if (Input.GetKey(KeyCode.W))
+            {
+                if (minerWilly.Frame > 3)
+                {
+                    minerWilly.Frame -= 4;
+                }
+
+                if (!wallToRight|| (wallToRight && minerWilly.Frame != 3))
+                {
+                    minerWilly.Frame += 1;
+                }
+                
+                if (minerWilly.Frame > 3)
+                {
+                    minerWilly.Frame = 0;
+
+                    if (!wallToRight)
+                    {
+                        minerWilly.X++;
+                    }
+                }
+                didMove = true;
+            }
+            else if (Input.GetKey(KeyCode.Q))
+            {
+                if (minerWilly.Frame < 4)
+                {
+                    minerWilly.Frame += 4;
+                }
+
+                if (!wallToLeft || (wallToLeft && minerWilly.Frame != 4))
+                {
+                    minerWilly.Frame -= 1;
+                }
+                
+                if (minerWilly.Frame < 4)
+                {
+                    minerWilly.Frame = 7;
+                    if (!wallToLeft)
+                    {
+                        minerWilly.X--;
+                    }
+                }
+                didMove = true;
+            }
+
+            if (didMove)
+            {
+                yield return new WaitForSeconds(MINER_WILLY_SPEED);
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+    }
+
     IEnumerator DrawScreen(RoomRenderer roomRenderer, RoomData roomData)
     {
-        while (!gameOver)
+        while (state == GameState.Playing || state == GameState.MoveToNextCavern)
         {
-            roomRenderer.DrawScreen(roomData, mobs, string.Format(ScoreFormat, hiScore, score));
+            roomRenderer.DrawScreen(roomData, minerWilly, mobs, string.Format(ScoreFormat, hiScore, score));
             yield return null;
         }
     }
 
     IEnumerator LoseAir(RoomData roomData)
     {
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
             yield return new WaitForSeconds(1);
 
@@ -69,7 +289,8 @@ public class GameController : MonoBehaviour
                 roomData.AirSupply.Length--;
                 roomData.AirSupply.Tip = 255;
 
-                gameOver = roomData.AirSupply.Length < 0;
+                // TODO: Fix game over state here...
+                //gameOver = roomData.AirSupply.Length < 0;
             }
         }
     }
@@ -81,7 +302,7 @@ public class GameController : MonoBehaviour
             m.FrameDirection = m.Frame < 4 ? 1 : -1;
         }
 
-        while (!gameOver)
+        while (state == GameState.Playing)
         {
             yield return new WaitForSeconds(0.1f);
 
@@ -120,4 +341,24 @@ public class GameController : MonoBehaviour
             }
         }
     }
+
+    private byte RotateLeft(byte v)
+    {
+        byte tmp = (byte)(v & 0x80);
+        v = (byte)(v << 1);
+
+        tmp = (byte)(tmp >> 7);
+        return (byte)(v | tmp);
+    }
+
+    private byte RotateRight(byte v)
+    {
+        byte tmp = (byte)(v & 1);
+        v = (byte)(v >> 1);
+
+        tmp = (byte)(tmp << 7);
+
+        return (byte)(v | tmp);
+    }
+
 }

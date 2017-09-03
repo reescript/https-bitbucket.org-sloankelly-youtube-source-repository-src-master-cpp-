@@ -57,12 +57,15 @@ public class SnapshotImporter : IDisposable
 
     public void Seek(int offset)
     {
-        offset = offset - 16384;
+        offset = offset - 16384; // Why did we do this again????
         _ms.Seek(offset, SeekOrigin.Begin);
     }
 
     protected void Dispose(bool disposed)
     {
         // Clean up everything
+        _writer.Close();
+        _reader.Close();
+        _ms.Dispose();
     }
 }

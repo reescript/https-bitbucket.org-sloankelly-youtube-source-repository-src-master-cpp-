@@ -71,8 +71,13 @@ namespace Com.SloanKelly.ZXSpectrum
 		// The draw mode.
 		DrawMode _drawMode = DrawMode.Overwrite;
 
-		// The draw order for the sprites
-		SpriteFormat _spriteFormat = SpriteFormat.ColumnOrder;
+        internal void FillAttribute(int x, int y, int width, int height, ZXAttribute attr)
+        {
+            FillAttribute(x, y, width, height, attr.Ink, attr.Paper, attr.Bright, attr.Flashing);
+        }
+
+        // The draw order for the sprites
+        SpriteFormat _spriteFormat = SpriteFormat.ColumnOrder;
 
         [Tooltip("The char set resource file name")]
         public string charSetResource = "charset";
@@ -217,7 +222,7 @@ namespace Com.SloanKelly.ZXSpectrum
 
 			if (y < 0 || y >= 24)
 				throw new IndexOutOfRangeException ("Y value out of range");
-
+                
 			SetAttributeX (x, y, ink, paper, bright, flashing);
 		}
         
