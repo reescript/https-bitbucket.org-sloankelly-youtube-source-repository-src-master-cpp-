@@ -1,0 +1,8 @@
+LevelName,PrefabName,InstanceName,X,Y,Z
+red,RedCube,Cube 1,-5,0,10
+red,BlueCube,Tower 1,5,0,10
+red,Plane,Ground,0,0,0
+green,GreenCube,Cube 1,-5,0,5
+green,GreenCube,Cube 2,5,0,5
+green,GreenCube,Cube 3,0,0,5
+green,Plane,Ground,0,0,0

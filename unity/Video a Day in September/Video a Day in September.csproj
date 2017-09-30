@@ -110,6 +110,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ActionSpawner\Scripts\FireMissile.cs" />
+    <Compile Include="Assets\ActionSpawner\Scripts\GunSpawner.cs" />
+    <Compile Include="Assets\Attributes\SelectionBaseObject.cs" />
+    <Compile Include="Assets\Attributes\SimplePlayerScript.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\CsvColumnAttribute.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\CsvContext.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\CsvFileDescription.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\CsvInputFormatAttribute.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\CsvOutputFormatAttribute.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\CsvStream.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\DataRow.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\DataRowItem.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\Exceptions.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\FieldMapper.cs" />
+    <Compile Include="Assets\CSV\LINQtoCSV\IDataRow.cs" />
+    <Compile Include="Assets\CSV\Scripts\CsvExampleObjectSpawner.cs" />
+    <Compile Include="Assets\CSV\Scripts\CsvSceneObject.cs" />
     <Compile Include="Assets\Day 1\Scripts\ActionExample.cs" />
     <Compile Include="Assets\Day 3\Scripts\FuncExample.cs" />
     <Compile Include="Assets\Day 4\Scripts\CurveFactory.cs" />
@@ -122,6 +139,16 @@
     <Compile Include="Assets\Day 7\Scripts\TextExtensions.cs" />
     <Compile Include="Assets\Day 8\Scripts\Player.cs" />
     <Compile Include="Assets\Day 8\Scripts\Reflector.cs" />
+    <Compile Include="Assets\Pause Menu\PauseMenu.cs" />
+    <Compile Include="Assets\Quiz\DebugWebServer.cs" />
+    <Compile Include="Assets\Quiz\FileHttpResponseBehaviour.cs" />
+    <Compile Include="Assets\Quiz\FileResponderAttribute.cs" />
+    <Compile Include="Assets\Quiz\HttpResponseBehaviour.cs" />
+    <Compile Include="Assets\Quiz\QuizWebServer.cs" />
+    <Compile Include="Assets\Quiz\WebServer.cs" />
+    <Compile Include="Assets\CSV\Scripts\Converters\StringToColorConverter.cs" />
+    <Compile Include="Assets\CSV\Scripts\Converters\StringToVector3Converter.cs" />
+    <Compile Include="Assets\CSV\Scripts\NewMonoBehaviour.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

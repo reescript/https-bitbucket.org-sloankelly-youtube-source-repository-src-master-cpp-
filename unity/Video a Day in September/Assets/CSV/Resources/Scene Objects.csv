@@ -1,0 +1,4 @@
+PrefabName,InstanceName,X,Y,Z
+RedCube,Cube 1,-5,0,10
+BlueCube,Tower 1,5,0,10
+Plane,Ground,0,0,0
