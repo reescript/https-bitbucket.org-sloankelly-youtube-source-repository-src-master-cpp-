@@ -1,0 +1,8 @@
+LevelName,PrefabName,InstanceName,Position,Colour,InitiallyVisible
+red,RedCube,Cube 1,"-5,0,10","1,0,0,1",yes
+red,BlueCube,Tower 1,"5,0,10","1,0,0,1",yes
+red,Plane,Ground,"0,0,0","1,0,0,1",yes
+green,GreenCube,Cube 1,"-5,0,5","1,0,0,1",yES
+green,GreenCube,Cube 2,"5,0,5","1,0,0,1",yEs
+green,GreenCube,Cube 3,"0,0,5","1,0,0,1",NO
+green,Plane,Ground,"0,0,0","1,0,0,1",Yes
