@@ -6,8 +6,11 @@ public class RoomStore : MonoBehaviour
 {
     public string snapshotFile = "manicminer";
     private List<RoomData> _rooms;
+    private List<byte[]> _sprites = new List<byte[]>();
 
     public IList<RoomData> Rooms { get { return _rooms; } }
+
+    public List<byte[]> MinerWillySprites { get { return _sprites; } }
 
     public bool IsReady { get; private set; }
 
@@ -29,6 +32,13 @@ public class RoomStore : MonoBehaviour
 
                 // Move to the next room
                 offset += 1024;
+            }
+
+            importer.Seek(33280);
+            for (int i = 0; i < 8; i++)
+            {
+                byte[] sprite = importer.ReadBytes(32);
+                _sprites.Add(sprite);
             }
         }
 
@@ -72,7 +82,7 @@ public class RoomStore : MonoBehaviour
             // Read in the first byte that represents the attribute
             byte attr = importer.Read();
             byte[] blockData = importer.ReadBytes(8);
-            data.Blocks[attr] = blockData;
+            data.Blocks[attr] = new BlockData( blockData, (BlockType)i);
         }
 
         // Read Miner Willy's start position
@@ -92,12 +102,11 @@ public class RoomStore : MonoBehaviour
         importer.Read(); // Should always be zero??
 
         // TODO: Conveyor belt (4 bytes for the conveyor belt)
-        importer.ReadBytes(4);
+        data.ConveyorDirection = (ConveyorDirection)importer.Read();
+        importer.ReadBytes(3);
 
-        // TODO: Border colour
-        int borderColour = importer.Read();
+        data.BorderColour = importer.Read();
 
-        // TODO: Import the positions of the items
         bool addKey = true;
         for (var j = 0; j < 5; j++)
         {
