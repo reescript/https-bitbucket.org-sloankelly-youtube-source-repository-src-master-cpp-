@@ -1,0 +1,19 @@
+﻿<Properties StartupConfiguration="{5DB43604-28AE-EDC9-98C8-8A7F7DE357EF}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CSV/Scripts/CsvExampleObjectSpawner.cs">
+    <Files>
+      <File FileName="Assets/CSV/LINQtoCSV/FieldMapper.cs" Line="120" Column="44" />
+      <File FileName="Assets/CSV/Scripts/Converters/StringToColorConverter.cs" Line="6" Column="1" />
+      <File FileName="Assets/CSV/Scripts/CsvExampleObjectSpawner.cs" Line="58" Column="71" />
+      <File FileName="Assets/CSV/Scripts/Converters/StringToVector3Converter.cs" Line="4" Column="38" />
+      <File FileName="Assets/CSV/Scripts/CsvSceneObject.cs" Line="17" Column="5" />
+      <File FileName="Assets/CSV/Scripts/NewMonoBehaviour.cs" Line="3" Column="5" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Video_220a_220Day_220in_220September PreferredExecutionTarget="Unity.Editor" />
+</Properties>
