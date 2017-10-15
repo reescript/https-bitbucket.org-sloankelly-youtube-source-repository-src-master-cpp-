@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio for Mac
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Space Rescue", "Space Rescue.csproj", "{365C75A1-A7D4-E66A-9F31-E514BB0B6564}"
 EndProject
 Global

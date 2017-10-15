@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour
 
     public AudioClip playerMove;
 
+    public AudioClip shipSaved;
+
     public AudioSource audio;
 
     public Pianola pianola;
@@ -26,9 +28,17 @@ public class GameController : MonoBehaviour
 
     public CanvasGroup gameOver;
 
+    public CanvasGroup nextWave;
+
+    public CanvasGroup inGameUI;
+
     public float gameStartDelay = 2f;
 
     public int currentRound = 1;
+
+    public int shipsToRescue = 5;
+
+    public int shipsSaved = 0;
 
 	public void TestCollision(int column)
 	{
@@ -61,13 +71,28 @@ public class GameController : MonoBehaviour
 
         gameBoard.SetValueAt(rocketColumn, 5, false);
 
+        AudioClip soundToPlay = playerMove;
+
         rocketColumn++;
         if (rocketColumn > 4)
         {
-            rocketColumn = 4;
+            // Add one to the # ships saved
+            shipsSaved++;
+
+            soundToPlay = shipSaved;
+
+            // Check for level win condition
+            if (shipsSaved == shipsToRescue)
+            {
+                StartNextWave();
+                return;
+            }
+
+            // Move the player back to column 0
+            rocketColumn = 0;
         }
         gameBoard.SetValueAt(rocketColumn, 5, true);
-        audio.PlayOneShot(playerMove);
+        audio.PlayOneShot(soundToPlay);
     }
 
     void Awake()
@@ -75,14 +100,29 @@ public class GameController : MonoBehaviour
         audio = GetComponent<AudioSource>();
     }
 
-    void Start()
+    IEnumerator Start()
     {
-        StartCoroutine(StartTheGame());
+        yield return StartTheGame();
+    }
+
+    void StartNextWave()
+    {
+        StartCoroutine(MoveToNextWave());
     }
 
     IEnumerator StartTheGame()
     {
+        inGameUI.alpha = 1f;
+        nextWave.alpha = 0f;
+        gameOver.alpha = 0f;
+
         rocketColumn = 0;
+
+        if (PlayerPrefs.HasKey("currentRound"))
+        {
+            currentRound = PlayerPrefs.GetInt("currentRound", 1);
+            if (currentRound == 6) currentRound = 1;
+        }
 
         startRound.SetWaveNumber(currentRound);
         startRound.ToggleVisible();
@@ -104,18 +144,37 @@ public class GameController : MonoBehaviour
     {
         // TODO: Put something a little better in here
         // Play a tune or whatever
+
+        inGameUI.alpha = 0f;
+        nextWave.alpha = 0f;
         yield return new WaitForSeconds(2);
 
         yield return StartTheGame();
     }
 
+    IEnumerator MoveToNextWave()
+    {
+        pianola.Reset();
+        gameBoard.Clear();
+        inGameUI.alpha = 0f;
+        gameOver.alpha = 0f;
+        nextWave.alpha = 1f;
+        yield return new WaitForSeconds(4);
+
+        PlayerPrefs.SetInt("currentRound", currentRound + 1);
+
+        SceneManager.LoadScene("Game");
+    }
+
     IEnumerator GameOver()
     {
-		// TODO: GAME OVER MAN, GAME OVER! -- Bill Paxton
+		// GAME OVER MAN, GAME OVER! -- Bill Paxton
 		gameBoard.Clear();
-		gameOver.alpha = 1f;
+        inGameUI.alpha = 0f;
+        nextWave.alpha = 0f;
+        gameOver.alpha = 1f;
 		yield return new WaitForSeconds(4);
-		// TODO: Load game
+        SceneManager.LoadScene("MainMenu");
 	}
 
     void ResetLevel()
