@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{365C75A1-A7D4-E66A-9F31-E514BB0B6564}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameController.cs">
+    <Files>
+      <File FileName="Assets/Scripts/Display.cs" Line="50" Column="53" />
+      <File FileName="Assets/Scripts/GameController.cs" Line="111" Column="5" />
+      <File FileName="Assets/Scripts/MouseMovement.cs" Line="7" Column="15" />
+      <File FileName="Assets/Scripts/KeyboardMovement.cs" Line="3" Column="31" />
+      <File FileName="Assets/Scripts/Pianola.cs" Line="36" Column="14" />
+      <File FileName="Assets/Scripts/PianolaObject.cs" Line="39" Column="23" />
+      <File FileName="Assets/Scripts/PianolaObjectFactory.cs" Line="6" Column="41" />
+      <File FileName="Assets/Scripts/GameBoard.cs" Line="14" Column="1" />
+      <File FileName="Assets/Scripts/UI/StartRoundCanvasController.cs" Line="9" Column="26" />
+      <File FileName="Assets/Scripts/LivesController.cs" Line="11" Column="41" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Volumes/Data/Home/sloan/Source/Repositories/youtube-source/unity/Space Rescue/Space Rescue/Assets/Scripts/GameBoard.cs" relfile="Assets/Scripts/GameBoard.cs" line="14" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.Space_220Rescue PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
