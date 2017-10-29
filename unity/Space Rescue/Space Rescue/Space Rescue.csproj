@@ -86,6 +86,8 @@
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\KeyboardMovement.cs" />
     <Compile Include="Assets\Scripts\LivesController.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\ControlVolume.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\StartTheGame.cs" />
     <Compile Include="Assets\Scripts\MouseMovement.cs" />
     <Compile Include="Assets\Scripts\Pianola.cs" />
     <Compile Include="Assets\Scripts\PianolaObject.cs" />

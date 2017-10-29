@@ -40,6 +40,8 @@ public class GameController : MonoBehaviour
 
     public int shipsSaved = 0;
 
+    bool NextWaveShowing { get { return nextWave.alpha == 1f; } }
+
 	public void TestCollision(int column)
 	{
         if (column == rocketColumn)
@@ -51,7 +53,7 @@ public class GameController : MonoBehaviour
 
     public void MovePlayerLeft()
     {
-        if (!isRunning) return;
+        if (!isRunning || NextWaveShowing) return;
 
         gameBoard.SetValueAt(rocketColumn, 5, false);
 
@@ -67,7 +69,7 @@ public class GameController : MonoBehaviour
 
     public void MovePlayerRight()
     {
-        if (!isRunning) return;
+        if (!isRunning || NextWaveShowing) return;
 
         gameBoard.SetValueAt(rocketColumn, 5, false);
 
