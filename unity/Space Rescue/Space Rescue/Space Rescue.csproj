@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>Android:13</UnityBuildTarget>
     <UnityVersion>2017.1.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -87,6 +89,10 @@
     <Compile Include="Assets\Scripts\KeyboardMovement.cs" />
     <Compile Include="Assets\Scripts\LivesController.cs" />
     <Compile Include="Assets\Scripts\MainMenu\ControlVolume.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\ControlVolumeTextVersion.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\LaunchUrl.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\MoveToScene.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\QuitGame.cs" />
     <Compile Include="Assets\Scripts\MainMenu\StartTheGame.cs" />
     <Compile Include="Assets\Scripts\MouseMovement.cs" />
     <Compile Include="Assets\Scripts\Pianola.cs" />

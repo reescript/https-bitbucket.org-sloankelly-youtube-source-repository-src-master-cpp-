@@ -6,7 +6,7 @@ PlayerSettings:
   serializedVersion: 12
   productGUID: 6c2788ecb6b09465d934a02735c4d953
   AndroidProfiler: 0
-  defaultScreenOrientation: 2
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -148,7 +148,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.sloankelly.spacerescue
   buildNumber: {}
-  AndroidBundleVersionCode: 2
+  AndroidBundleVersionCode: 3
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
