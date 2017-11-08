@@ -29,3 +29,5 @@ unity/Ludum Dare 39/Library/
 cpp/networking/UDPQOTDClientServer/
 unity/Space Rescue/Space Rescue/Library/
 unity/ThreeThousandSubs/3000 Subs/Library/
+*.keystore
+unity/Space Rescue/Exports/
