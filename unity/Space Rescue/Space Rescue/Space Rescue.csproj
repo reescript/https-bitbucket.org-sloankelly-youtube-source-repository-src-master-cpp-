@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\KeyboardMovement.cs" />
     <Compile Include="Assets\Scripts\LivesController.cs" />
+    <Compile Include="Assets\Scripts\MainMenu\ClickToScene.cs" />
     <Compile Include="Assets\Scripts\MainMenu\ControlVolume.cs" />
     <Compile Include="Assets\Scripts\MainMenu\ControlVolumeTextVersion.cs" />
     <Compile Include="Assets\Scripts\MainMenu\LaunchUrl.cs" />
