@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThirdPersonCamera", "ThirdPersonCamera.csproj", "{C06CCB3F-14E9-A1B0-FD07-5DB27D830847}"
 EndProject
 Global
