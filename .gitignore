@@ -31,3 +31,5 @@ unity/Space Rescue/Space Rescue/Library/
 unity/ThreeThousandSubs/3000 Subs/Library/
 *.keystore
 unity/Space Rescue/Exports/
+csharp/Spectrum Graphics Editor/Spectrum Graphics Editor/obj/
+csharp/Spectrum Graphics Editor/packages/

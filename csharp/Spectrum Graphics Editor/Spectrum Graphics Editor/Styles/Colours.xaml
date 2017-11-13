@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:SloanKelly.Tools.SGE.Styles">
+
+    <!-- Block colours -->
+    <Color x:Key="BackgroundDark">#161616</Color>
+    <SolidColorBrush x:Key="BackgroundDarkBrush" Color="{StaticResource BackgroundDark}" />
+
+    <Color x:Key="BackgroundLight">#262626</Color>
+    <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource BackgroundLight}" />
+
+    <Color x:Key="BackgroundLighter">#363636</Color>
+    <SolidColorBrush x:Key="BackgroundLighterBrush" Color="{StaticResource BackgroundLighter}" />
+
+    <Color x:Key="BackgroundWarning">#990000</Color>
+    <SolidColorBrush x:Key="BackgroundWarningBrush" Color="{StaticResource BackgroundWarning}" />    
+    
+    <!-- Accents -->
+    <Color x:Key="WindowBorder">#154467</Color>
+    <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorder}" />
+
+    <Color x:Key="Highlight">#5c7e10</Color>
+    <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource Highlight}" />    
+    
+    <!-- Supplemental -->
+    <Color x:Key="WindowTitle">#e1e1e1</Color>
+    <SolidColorBrush x:Key="WindowTitleBrush" Color="{StaticResource WindowTitle}" />
+
+</ResourceDictionary>
