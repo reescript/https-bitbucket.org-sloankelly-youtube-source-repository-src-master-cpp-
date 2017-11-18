@@ -31,3 +31,7 @@ unity/Space Rescue/Space Rescue/Library/
 unity/ThreeThousandSubs/3000 Subs/Library/
 *.keystore
 unity/Space Rescue/Exports/
+unity/UI/DynamicallyAddingButtons/Library/
+csharp/Spectrum Graphics Editor/
+cpp/_ignore/
+unity/UI/DynamicallyAddingButtons/Temp/
