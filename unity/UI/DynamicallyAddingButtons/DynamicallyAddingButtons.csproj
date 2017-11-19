@@ -81,6 +81,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DialogBox\Scripts\DialogBox.cs" />
+    <Compile Include="Assets\DialogBox\Scripts\IDialog.cs" />
     <Compile Include="Assets\Scripts\AddObjectToList.cs" />
     <Compile Include="Assets\Scripts\EchoIndex.cs" />
     <Compile Include="Assets\Scripts\ListBox.cs" />
