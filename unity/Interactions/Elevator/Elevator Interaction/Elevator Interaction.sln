@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator Interaction.Plugins", "Elevator Interaction.Plugins.csproj", "{8311AB50-7B0C-C821-1A84-F15912508C57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator Interaction", "Elevator Interaction.csproj", "{32E9F91E-F58F-0F64-C173-30201C6BFF31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Elevator Interaction.Editor.Plugins", "Elevator Interaction.Editor.Plugins.csproj", "{34B2CFFE-E02A-A8B9-1D9F-1116A804CCCB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8311AB50-7B0C-C821-1A84-F15912508C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8311AB50-7B0C-C821-1A84-F15912508C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8311AB50-7B0C-C821-1A84-F15912508C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8311AB50-7B0C-C821-1A84-F15912508C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E9F91E-F58F-0F64-C173-30201C6BFF31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E9F91E-F58F-0F64-C173-30201C6BFF31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E9F91E-F58F-0F64-C173-30201C6BFF31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E9F91E-F58F-0F64-C173-30201C6BFF31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34B2CFFE-E02A-A8B9-1D9F-1116A804CCCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34B2CFFE-E02A-A8B9-1D9F-1116A804CCCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34B2CFFE-E02A-A8B9-1D9F-1116A804CCCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34B2CFFE-E02A-A8B9-1D9F-1116A804CCCB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
