@@ -20,15 +20,14 @@ public class GravityGun : MonoBehaviour
 
         bool currentFiring = Input.GetAxis("Fire") < MinimumFireValue;
         pivot.gameObject.SetActive(currentFiring);
-
-        if (!currentFiring && fireWasHeld) tractorBeam.Drop();
-
+        
         float x = Input.GetAxis("Mouse_Look_X");
         float y = -Input.GetAxis("Mouse_Look_Y");
         
         var nextAngles = new Vector3(0, 0, Mathf.Atan2(x, y) * -180 / Mathf.PI);
-
         pivot.eulerAngles = nextAngles;
+
+        if (!currentFiring && fireWasHeld) tractorBeam.Release(pivot.eulerAngles, speed);
 
         fireWasHeld = currentFiring;
     }

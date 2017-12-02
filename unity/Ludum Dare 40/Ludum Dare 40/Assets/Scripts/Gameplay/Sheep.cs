@@ -10,7 +10,30 @@ public class Sheep : MonoBehaviour
     public float speed = 4f;
 
     public SheepState sheepState = SheepState.MovingAround;
+    
+    public void GetSheared()
+    {
+        sheepState = SheepState.EnteringShearOMatic;
+        var spiralFade = gameObject.AddComponent<SpiralFade>();
+        spiralFade.endAction = () =>
+        {
+            Destroy(gameObject);
+        };
+    }
 
+    public void Fling(Vector3 euler, float speed)
+    {
+        speedVec = euler * speed;
+        sheepState = SheepState.MovingAround;
+        GetComponent<Collider2D>().enabled = true;
+    }
+
+    public void Captured()
+    {
+        sheepState = SheepState.HeldInTractorBeam;
+        GetComponent<Collider2D>().enabled = false;
+    }
+    
     private void Start()
     {
         updateDirectionTime = 5 + Random.value * 5;
