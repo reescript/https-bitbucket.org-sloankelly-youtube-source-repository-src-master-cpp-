@@ -10,13 +10,16 @@ public class Sheep : MonoBehaviour
     public float speed = 4f;
 
     public SheepState sheepState = SheepState.MovingAround;
-    
+
+    public System.Action SheepEnteredSheerOMatic = () => { };
+
     public void GetSheared()
     {
         sheepState = SheepState.EnteringShearOMatic;
         var spiralFade = gameObject.AddComponent<SpiralFade>();
         spiralFade.endAction = () =>
         {
+            SheepEnteredSheerOMatic();
             Destroy(gameObject);
         };
     }

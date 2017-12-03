@@ -13,6 +13,8 @@ public class SheepFactory : MonoBehaviour
 
     public float spawnTime = 2f;
 
+    public System.Action SheepEnteredSheerOMatic = () => { };
+
     public int SheepCount { get { return sheepCount; } }
 
     private IEnumerator Start()
@@ -23,6 +25,7 @@ public class SheepFactory : MonoBehaviour
             dolly.transform.position = transform.position;
 
             var sheep = dolly.GetComponent<Sheep>();
+            sheep.SheepEnteredSheerOMatic = SheepEnteredSheerOMatic;
             sheep.speed = minSpeed + Random.value * speedRandom;
 
             sheepCount++;

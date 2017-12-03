@@ -8,16 +8,32 @@ public class SwapSpriteOnTrigger : MonoBehaviour
 
     public Sprite[] sprites;
 
-    public Func<Collider2D, bool, bool> filter = (c, e) => { return true; };
+    public Func<GameObject, bool, bool> filter = (c, e) => { return true; };
 
     private void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (filter(collision.gameObject, true))
+        {
+            sprite.sprite = sprites[1];
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (filter(collision.gameObject, false))
+        {
+            sprite.sprite = sprites[0];
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (filter(collision, true))
+        if (filter(collision.gameObject, true))
         {
             sprite.sprite = sprites[1];
         }
@@ -25,7 +41,7 @@ public class SwapSpriteOnTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (filter(collision, false))
+        if (filter(collision.gameObject, false))
         {
             sprite.sprite = sprites[0];
         }

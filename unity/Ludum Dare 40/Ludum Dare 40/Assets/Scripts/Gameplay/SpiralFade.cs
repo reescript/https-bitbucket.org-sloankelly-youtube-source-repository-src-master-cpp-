@@ -20,7 +20,7 @@ public class SpiralFade : MonoBehaviour
             var s = Vector3.Lerp(gameObject.transform.localScale, targetScale, time);
             gameObject.transform.localScale = s;
 
-            time += Time.deltaTime;
+            time += Time.deltaTime / 0.5f;
             yield return null;
         }
 
@@ -30,7 +30,9 @@ public class SpiralFade : MonoBehaviour
             var s = Vector3.Lerp(gameObject.transform.localScale, Vector3.zero, time);
             gameObject.transform.localScale = s;
 
-            time += Time.deltaTime / 0.5f;
+            gameObject.transform.Rotate(Vector3.forward, 30 * Time.deltaTime);
+
+            time += Time.deltaTime / 0.25f;
             yield return null;
         }
 

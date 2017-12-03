@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class TractorBeam : MonoBehaviour
 {
     float speed = 8f;
     Sheep currentSheep;
-    bool droppingOff = false;
 
     public void Release(Vector3 direction, float speed)
     {
         if (currentSheep == null) return;
 
-        if (droppingOff)
+        if (IsInsideShearOMatic())
         {
             Drop();
         }
@@ -21,27 +21,31 @@ public class TractorBeam : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private bool IsInsideShearOMatic()
     {
-        if (collision.CompareTag("SheerOMatic"))
+        var rayStart = transform.position - new Vector3(0, 0, 10);
+
+        var hits = Physics2D.RaycastAll(rayStart, Vector3.forward, 20);
+        if (hits.Length > 0)
         {
-            droppingOff = false;
+            foreach(var h in hits)
+            {
+                if (h.collider.CompareTag("SheerOMatic"))
+                {
+                    return true;
+                }
+            }
         }
+
+        return false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("SheerOMatic"))
-        {
-            droppingOff = true;
-        }
-        else
-        {
-            if (!collision.CompareTag("Sheep")) return;
-            if (currentSheep != null) return;
+        if (!collision.CompareTag("Sheep")) return;
+        if (currentSheep != null) return;
 
-            CaptureSheep(collision.gameObject.GetComponent<Sheep>());
-        }
+        CaptureSheep(collision.gameObject.GetComponent<Sheep>());
     }
 
     private void CaptureSheep(Sheep sheep)
@@ -87,8 +91,8 @@ public class TractorBeam : MonoBehaviour
     {
         if (currentSheep == null) return;
 
-        currentSheep.Fling(direction, speed);
         currentSheep.transform.SetParent(null);
+        currentSheep.Fling(direction, speed);
         currentSheep = null;
     }
 }

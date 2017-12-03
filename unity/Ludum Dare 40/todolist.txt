@@ -5,7 +5,7 @@ Game Screen
 			- Repel (Would be nice to have)
 	Sheep
 		* Dropped of by the truck
-		Must be dumped (one at a time) into the Shear-o-matic
+		* Must be dumped (one at a time) into the Shear-o-matic
 	Wool
 		Produced each time a sheep is sheered
 		Drop off in the Sweater maker

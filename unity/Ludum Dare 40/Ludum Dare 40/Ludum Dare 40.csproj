@@ -81,6 +81,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Gameplay\GamePlayController.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Giles.cs" />
     <Compile Include="Assets\Scripts\Gameplay\GravityGun.cs" />
     <Compile Include="Assets\Scripts\Gameplay\ShearOMatic.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Assets\Scripts\Gameplay\SwapSpriteOnTrigger.cs" />
     <Compile Include="Assets\Scripts\Gameplay\TractorBeam.cs" />
     <Compile Include="Assets\Scripts\Gameplay\WeaponAnimationController.cs" />
+    <Compile Include="Assets\Scripts\Gameplay\WoolSpawner.cs" />
     <Compile Include="Assets\Scripts\UI\Debug\PropertyToString.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
