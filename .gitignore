@@ -42,3 +42,7 @@ unity/Interactions/Elevator/Elevator Interaction/Temp/
 unity/Flappy Bird/Library/
 unity/Ludum Dare 40/Ludum Dare 40/Temp/
 unity/Ludum Dare 40/Ludum Dare 40/Library/
+cpp/networking/UDPClientServerBasic/UDP_Server/UDP_Server/Debug/
+cpp/networking/UDPClientServerBasic/UDP_Client/UDP_Client/Debug/
+*.sdf
+*.opendb
