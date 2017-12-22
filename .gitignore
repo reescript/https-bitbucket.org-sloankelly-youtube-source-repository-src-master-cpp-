@@ -46,3 +46,4 @@ cpp/networking/UDPClientServerBasic/UDP_Server/UDP_Server/Debug/
 cpp/networking/UDPClientServerBasic/UDP_Client/UDP_Client/Debug/
 *.sdf
 *.opendb
+cpp/networking/BarebonesClient/Barebones_Client/x64/
