@@ -16,8 +16,6 @@ public class GameController : MonoBehaviour
         Dead
     }
 
-    const string ScoreFormat = "High Score {0:000000}   Score {1:000000}";
-
     const float ENVIRONMENT_SPEED = 0.1f;
     const float CONVEYOR_SPEED = 0.025f;
     const float MINER_WILLY_SPEED = 0.1f;
@@ -28,10 +26,12 @@ public class GameController : MonoBehaviour
     
     private RoomData roomData;
     private GameState state;
-    private MinerWilly minerWilly;
+    private Mob minerWilly;
     private List<Mob> mobs = new List<Mob>();
     private byte[] keyColours = new byte[] { 3, 6, 6, 4 };
     private int currentKeyColour = 0;
+
+    private bool isDemoMode = true; // TODO : CHANGE THIS!!
 
     public Camera mainCamera;
 
@@ -40,6 +40,10 @@ public class GameController : MonoBehaviour
     [Tooltip("The room number (0-19")]
     public int roomId;
     
+    public int Score { get { return score; } }
+
+    public int HiScore { get { return hiScore; } }
+
     IEnumerator Start()
     {
         if (roomId == -1)
@@ -63,10 +67,10 @@ public class GameController : MonoBehaviour
         roomData = store.Rooms[roomId];
 
         // Get Miner Willy data from store and from the room
-        minerWilly = new MinerWilly(store.MinerWillySprites, roomData.MinerWillyStart.X, roomData.MinerWillyStart.Y, 4, 0, 0, 7);
+        minerWilly = new Mob(store.MinerWillySprites, roomData.MinerWillyStart.X, roomData.MinerWillyStart.Y, 4, 0, 0, 7);
 
         // Set up the horizontal guardians
-        roomData.HorizontalGuardians.ForEach(g => mobs.Add(new Mob(g)));
+        roomData.HorizontalGuardians.ForEach(g => mobs.Add(new Mob(roomData.GuardianGraphics, g.StartX, g.StartY, g.Left, g.Right, g.StartFrame, g.Attribute)));
 
         // Set up the conveyor shape
         foreach (var block in roomData.Blocks.Values)
@@ -81,22 +85,55 @@ public class GameController : MonoBehaviour
         // Set the border colour
         mainCamera.backgroundColor = ZXColour.Get(roomData.BorderColour);
 
+        SetupRenderer(roomRenderer);
+
         // HACK: Make portal available
         // REMOVE THIS LATER
         roomData.Portal.Attr.Flashing = true;
 
         StartCoroutine(DrawScreen(roomRenderer, roomData));
         StartCoroutine(LoseAir(roomData));
-        StartCoroutine(MoveWilly(minerWilly, roomData));
+        if (!isDemoMode) StartCoroutine(MoveWilly(minerWilly, roomData));
         StartCoroutine(CycleColours(roomData.RoomKeys));
         StartCoroutine(UpdateConveyor(roomData));
         StartCoroutine(CheckPortalCollision(roomData));
         StartCoroutine(EndOfCavernCheck(roomData));
 
+        if (isDemoMode) StartCoroutine(DemoNextSceen());
+
         if ((roomId>=0 && roomId <=6) || roomId==9 || roomId==15)
         {
             StartCoroutine(BidirectionalSprites());
         }
+    }
+
+    private void SetupRenderer(RoomRenderer roomRenderer)
+    {
+        var tmp = new List<IRenderer>();
+
+        tmp.Add(new MinerWillyRenderer(minerWilly, roomData));
+        tmp.Add(new BlockRenderer(roomData));
+        tmp.Add(new ItemsRenderer(roomData));
+        tmp.Add(new HorizontalGuardianRenderer(roomData, mobs));
+        tmp.Add(new PortalRenderer(roomData));
+        tmp.Add(new RoomNameRenderer(roomData));
+        tmp.Add(new AirSupplyRenderer(roomData));
+        tmp.Add(new PlayerScoreRenderer(this));
+
+        roomRenderer.Init(tmp);
+    }
+
+    IEnumerator DemoNextSceen()
+    {
+        yield return new WaitForSeconds(3);
+        roomId++;
+        if (roomId >= 20)
+        {
+            roomId = 0;
+        }
+
+        PlayerPrefs.SetInt("_room", roomId);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     IEnumerator EndOfCavernCheck(RoomData roomData)
@@ -197,7 +234,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator MoveWilly(MinerWilly minerWilly, RoomData data)
+    IEnumerator MoveWilly(Mob minerWilly, RoomData data)
     {
         while (state == GameState.Playing)
         {
@@ -270,7 +307,7 @@ public class GameController : MonoBehaviour
     {
         while (state == GameState.Playing || state == GameState.MoveToNextCavern)
         {
-            roomRenderer.DrawScreen(roomData, minerWilly, mobs, string.Format(ScoreFormat, hiScore, score));
+            roomRenderer.DrawScreen();
             yield return null;
         }
     }
