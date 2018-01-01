@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(RoomStore))]
 [RequireComponent(typeof(SpectrumScreen))]
 [RequireComponent(typeof(RoomRenderer))]
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviour, IScoreInformation
 {
     enum GameState
     {
