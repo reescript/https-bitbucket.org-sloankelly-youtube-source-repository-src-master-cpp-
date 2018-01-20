@@ -16,36 +16,58 @@ namespace Com.SloanKelly.ZXSpectrum
 		/// <param name="y">The y coordinate.</param>
 		/// <param name="row">Row.</param>
 		/// <param name="b">The blue component.</param>
-		public static void Set(this bool[,] arr, int x, int y, int row, byte b)
+		public static void Set(this bool[,] arr, int x, int y, int row, byte b, bool overwrite)
 		{
 			y += (7 - row);
 
 			for (int i = 7; i >= 0; i--) 
 			{
-				if ((b & (1 << i)) > 0) 
-				{
+                if ((b & (1 << i)) > 0)
+                {
                     // UnityEngine.Debug.Log (x + " " + y);
                     try
                     {
                         arr[x + (7 - i), y] = true;
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         UnityEngine.Debug.Log(x + " " + (7 - i) + " " + i + " " + y);
                     }
-				}
+                }
+                else if (overwrite)
+                {
+                    arr[x + (7 - i), y] = false;
+                }
 			}
 		}
 
-		/// <summary>
-		/// Get the values at the given co-ordinates.
-		/// </summary>
-		/// <param name="arr">Arr.</param>
-		/// <param name="x">The x coordinate.</param>
-		/// <param name="y">The y coordinate.</param>
-		/// <param name="cols">Cols.</param>
-		/// <param name="rows">Rows.</param>
-		public static byte[] Get(this bool[,] arr, int x, int y, int cols, int rows)
+        //public static void SetPP(this bool[,] arr, int x, int y, byte b)
+        //{
+        //    for (int i = 7; i >= 0; i--)
+        //    {
+        //        if ((b & (1 << i)) > 0)
+        //        {
+        //            try
+        //            {
+        //                arr[x + (7 - i), y] = true;
+        //            }
+        //            catch (Exception)
+        //            {
+        //                UnityEngine.Debug.Log(x + " " + (7 - i) + " " + i + " " + y);
+        //            }
+        //        }
+        //    }
+        //}
+
+        /// <summary>
+        /// Get the values at the given co-ordinates.
+        /// </summary>
+        /// <param name="arr">Arr.</param>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="cols">Cols.</param>
+        /// <param name="rows">Rows.</param>
+        public static byte[] Get(this bool[,] arr, int x, int y, int cols, int rows)
 		{
 			List<byte> bytes = new List<byte> ();
 
