@@ -49,3 +49,5 @@ cpp/networking/UDPClientServerBasic/UDP_Client/UDP_Client/Debug/
 cpp/networking/BarebonesClient/Barebones_Client/x64/
 cpp/networking/BarebonesServer/BarebonesServer/x64/
 unity/Riff_On_Shiff/Library/
+unity/Lock Poppers/Lock Poppers/Library/
+cpp/networking/SocketsWrapper/
