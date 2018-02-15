@@ -3,9 +3,21 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    enum GameState
+    {
+        Playing,
+        Interstitial
+    }
+
+    private const int CurrentLevel = 1; // For debug purposes only! Should be 1 for shipping game
+
+    private const float BallFadeInOutTime = 0.25f;
+
     public RotateBall ballPivot;
 
     public RotateTick tickPivot;
+
+    public LockHoopAnimation lockHoop;
 
     public Text levelText;
 
@@ -13,65 +25,96 @@ public class GameController : MonoBehaviour
 
     float direction = 1f;
 
-    int currentLevel = 10;
+    int currentLevel = CurrentLevel;
 
-    int tapsLeft = 10;
+    GameState state = GameState.Interstitial;
+
+    int tapsLeft = CurrentLevel;
 
     public float tickSpeed = 60f;
 
     private void Awake()
     {
         tickPivot.missedTheBall = MissedTheBall;
-
-        levelText.text = "Level: " + currentLevel;
-        dialText.text = tapsLeft.ToString();
-    }
-
-    private void Start()
-    {
-        ballPivot.StartFadeIn(ShowTick, 0.5f, 1f);
+        UpdateUI();
     }
     
     private void ShowTick()
     {
         tickPivot.angleSpeed = tickSpeed;
+        tickPivot.Rotate(true);
         tickPivot.gameObject.SetActive(true);
     }
 
     private void MissedTheBall()
     {
-        // TODO: GAME OVER
+        if (state == GameState.Interstitial)
+        {
+            return;
+        }
+
+        // TODO: HANDLE GAME OVER
     }
 
     private void OnMouseDown()
     {
         // TODO: ARE WE ACTUALLY PLAYING THE GAME!??!
 
-        if (tickPivot.InsideBall)
+        switch (state)
         {
-            tapsLeft--;
-            if (tapsLeft == 0)
-            {
-                DoCelebration();
-            }
-            else
-            {
-                direction *= -1;
-                tickPivot.direction = direction;
-                ballPivot.StartFadeOut(Ball_FadedOut, 0.5f, 1f);
-                dialText.text = tapsLeft.ToString();
-            }
+            case GameState.Interstitial:
+                // TODO: Game set up stuff
+                ballPivot.StartFadeIn(ShowTick, BallFadeInOutTime, 1f);
+                state = GameState.Playing;
+                break;
+            default:
+                if (tickPivot.InsideBall)
+                {
+                    tapsLeft--;
+                    if (tapsLeft == 0)
+                    {
+                        tickPivot.Rotate(false);
+                        ballPivot.StartFadeOut(DoCelebration, BallFadeInOutTime, 1f);
+                    }
+                    else
+                    {
+                        direction *= -1;
+                        tickPivot.direction = direction;
+                        ballPivot.StartFadeOut(Ball_FadedOut, BallFadeInOutTime, 1f);
+                        UpdateUI();
+                    }
+                }
+                break;
         }
     }
 
     private void DoCelebration()
     {
+        tickPivot.gameObject.SetActive(false);
+        lockHoop.ShowUnlock(Unlock_Finished, 1f);
+    }
 
+    private void Unlock_Finished()
+    {
+        // TODO: SHOW END SCREEN BIT HERE
+        state = GameState.Interstitial;
+        tickPivot.Reset();
+        lockHoop.Reset();
+        tickPivot.Reset();
+        currentLevel++;
+        tapsLeft = currentLevel;
+        UpdateUI();
     }
 
     private void Ball_FadedOut()
     {
         tickPivot.Reset();
-        ballPivot.StartFadeIn(ShowTick, 0.5f, 1f);
+        ballPivot.StartFadeIn(ShowTick, BallFadeInOutTime, 1f);
+    }
+    
+    private void UpdateUI()
+    {
+        levelText.text = "Level: " + currentLevel;
+        dialText.text = tapsLeft.ToString();
     }
 }
