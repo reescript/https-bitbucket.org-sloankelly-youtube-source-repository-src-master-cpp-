@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\RotateBall.cs" />
     <Compile Include="Assets\Scripts\RotateTick.cs" />
+    <Compile Include="Assets\Scripts\TickTrigger.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
