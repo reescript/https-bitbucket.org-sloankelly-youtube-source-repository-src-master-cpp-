@@ -36,18 +36,29 @@ public class KonamiCode : MonoBehaviour
                 {
                     success = true;
                     timer = 0f;
+                    index = 0;
                 }
                 else
                 {
                     timer = WaitTime;
                 }
             }
-
-            timer -= Time.deltaTime;
-            if (timer < 0)
+            else if (Input.anyKeyDown)
             {
+                // print("Wrong key in sequence.");
                 timer = 0;
                 index = 0;
+            }
+            
+            if (timer > 0)
+            {
+                timer -= Time.deltaTime;
+
+                if (timer <= 0)
+                {
+                    timer = 0;
+                    index = 0;
+                }
             }
 
             yield return null;
