@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class RotateTick : MonoBehaviour
 {
+    private bool rotating = true;
+
     public float angleSpeed = -45f;
 
     private TickTrigger tickTrigger;
@@ -13,6 +15,11 @@ public class RotateTick : MonoBehaviour
 
     public bool InsideBall { get { return tickTrigger == null ? false : tickTrigger.InsideBall; } }
 
+    public void Rotate(bool rotate)
+    {
+        rotating = rotate;
+    }
+    
     public void Reset()
     {
         tickTrigger.Reset();
@@ -26,7 +33,10 @@ public class RotateTick : MonoBehaviour
 
     void Update()
     {
-        transform.Rotate(Vector3.forward, angleSpeed * Time.deltaTime * direction);
+        if (rotating)
+        {
+            transform.Rotate(Vector3.forward, angleSpeed * Time.deltaTime * direction);
+        }
     }
 
     void MissedTheBall()
