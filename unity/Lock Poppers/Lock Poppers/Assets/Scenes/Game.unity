@@ -765,6 +765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a996d648a7990ee4dba3eb767e3185c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockBody: {fileID: 100634988}
   ballPivot: {fileID: 1548795098}
   tickPivot: {fileID: 141283421}
   lockHoop: {fileID: 1171566771}

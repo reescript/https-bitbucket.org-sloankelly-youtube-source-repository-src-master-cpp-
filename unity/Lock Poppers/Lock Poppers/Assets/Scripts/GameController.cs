@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
@@ -12,6 +13,8 @@ public class GameController : MonoBehaviour
     private const int CurrentLevel = 1; // For debug purposes only! Should be 1 for shipping game
 
     private const float BallFadeInOutTime = 0.25f;
+
+    public Transform lockBody;
 
     public RotateBall ballPivot;
 
@@ -44,6 +47,7 @@ public class GameController : MonoBehaviour
         tickPivot.angleSpeed = tickSpeed;
         tickPivot.Rotate(true);
         tickPivot.gameObject.SetActive(true);
+        state = GameState.Playing;
     }
 
     private void MissedTheBall()
@@ -53,7 +57,7 @@ public class GameController : MonoBehaviour
             return;
         }
 
-        // TODO: HANDLE GAME OVER
+        StartCoroutine(ShakeTheLock());
     }
 
     private void OnMouseDown()
@@ -64,7 +68,7 @@ public class GameController : MonoBehaviour
         {
             case GameState.Interstitial:
                 // TODO: Game set up stuff
-                ballPivot.StartFadeIn(ShowTick, BallFadeInOutTime, 1f);
+                ballPivot.StartFadeIn(ShowTick, BallFadeInOutTime, 1f, tickPivot.ZRotation);
                 state = GameState.Playing;
                 break;
             default:
@@ -74,15 +78,20 @@ public class GameController : MonoBehaviour
                     if (tapsLeft == 0)
                     {
                         tickPivot.Rotate(false);
-                        ballPivot.StartFadeOut(DoCelebration, BallFadeInOutTime, 1f);
+                        ballPivot.StartFadeOut(DoCelebration, BallFadeInOutTime, 1f, tickPivot.ZRotation);
                     }
                     else
                     {
+                        state = GameState.Interstitial;
                         direction *= -1;
                         tickPivot.direction = direction;
-                        ballPivot.StartFadeOut(Ball_FadedOut, BallFadeInOutTime, 1f);
+                        ballPivot.StartFadeOut(Ball_FadedOut, BallFadeInOutTime, 1f, tickPivot.ZRotation);
                         UpdateUI();
                     }
+                }
+                else
+                {
+                    StartCoroutine(ShakeTheLock());
                 }
                 break;
         }
@@ -90,18 +99,19 @@ public class GameController : MonoBehaviour
 
     private void DoCelebration()
     {
+        state = GameState.Interstitial;
         tickPivot.gameObject.SetActive(false);
-        lockHoop.ShowUnlock(Unlock_Finished, 1f);
+        
+        var newLevel = currentLevel++;
+        lockHoop.ShowUnlock(() => Unlock_Finished(newLevel), 1f);
     }
 
-    private void Unlock_Finished()
+    private void Unlock_Finished(int newLevel)
     {
         // TODO: SHOW END SCREEN BIT HERE
-        state = GameState.Interstitial;
         tickPivot.Reset();
         lockHoop.Reset();
         tickPivot.Reset();
-        currentLevel++;
         tapsLeft = currentLevel;
         UpdateUI();
     }
@@ -109,12 +119,35 @@ public class GameController : MonoBehaviour
     private void Ball_FadedOut()
     {
         tickPivot.Reset();
-        ballPivot.StartFadeIn(ShowTick, BallFadeInOutTime, 1f);
+        ballPivot.StartFadeIn(ShowTick, BallFadeInOutTime, 1f, tickPivot.ZRotation);
     }
     
     private void UpdateUI()
     {
         levelText.text = "Level: " + currentLevel;
         dialText.text = tapsLeft.ToString();
+    }
+
+    IEnumerator ShakeTheLock()
+    {
+        const float duration = 0.5f;
+
+        state = GameState.Interstitial;
+        tickPivot.Rotate(false);
+        tickPivot.gameObject.SetActive(false);
+
+        float time = 0f;
+        while (time < 1f)
+        {
+            float newx = -0.25f + Random.Range(0f, 0.5f);
+            lockBody.localPosition = new Vector3(newx, 0f, 0f);
+
+            time += Time.deltaTime / duration;
+
+            yield return null;
+        }
+
+        lockBody.localPosition = Vector3.zero;
+        Unlock_Finished(currentLevel);
     }
 }
