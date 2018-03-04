@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(SaveGameController))]
 public class GameController : MonoBehaviour
 {
     enum GameState
@@ -10,9 +11,9 @@ public class GameController : MonoBehaviour
         Interstitial
     }
 
-    private const int CurrentLevel = 1; // For debug purposes only! Should be 1 for shipping game
-
     private const float BallFadeInOutTime = 0.25f;
+
+    private SaveGameController saveGameController;
 
     public Transform lockBody;
 
@@ -28,16 +29,24 @@ public class GameController : MonoBehaviour
 
     float direction = 1f;
 
-    int currentLevel = CurrentLevel;
+    int currentLevel = 1;
 
     GameState state = GameState.Interstitial;
 
-    int tapsLeft = CurrentLevel;
+    int tapsLeft = 1;
 
     public float tickSpeed = 60f;
 
-    private void Awake()
+    IEnumerator Start()
     {
+        saveGameController = GetComponent<SaveGameController>();
+
+        while (!saveGameController.IsReady)
+            yield return null;
+
+        currentLevel = saveGameController.CurrentLevel;
+        tapsLeft = saveGameController.CurrentLevel;
+
         tickPivot.missedTheBall = MissedTheBall;
         UpdateUI();
     }
@@ -58,6 +67,18 @@ public class GameController : MonoBehaviour
         }
 
         StartCoroutine(ShakeTheLock());
+    }
+
+    private void OnApplicationFocus (bool focused)
+    {
+        if (!focused)
+        {
+            state = GameState.Interstitial;
+            tickPivot.Rotate(false);
+            tickPivot.gameObject.SetActive(false);
+            lockBody.localPosition = Vector3.zero;
+            Unlock_Finished(currentLevel);
+        }
     }
 
     private void OnMouseDown()
@@ -101,8 +122,9 @@ public class GameController : MonoBehaviour
     {
         state = GameState.Interstitial;
         tickPivot.gameObject.SetActive(false);
-        
         var newLevel = currentLevel++;
+        saveGameController.SaveProgress(newLevel + 1);
+
         lockHoop.ShowUnlock(() => Unlock_Finished(newLevel), 1f);
     }
 
