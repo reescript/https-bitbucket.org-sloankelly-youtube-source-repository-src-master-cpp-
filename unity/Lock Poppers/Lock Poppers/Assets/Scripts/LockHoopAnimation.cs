@@ -10,7 +10,7 @@ public class LockHoopAnimation : MonoBehaviour
 
     public void Reset()
     {
-        child.position = Vector3.zero;
+        child.localPosition = Vector3.zero;
     }
 
     public void ShowUnlock(Action finished, float duration)
@@ -25,7 +25,7 @@ public class LockHoopAnimation : MonoBehaviour
         {
             float currentHeight = heightCurve.Evaluate(time);
 
-            child.position = new Vector3(0, currentHeight, 0);
+            child.localPosition = new Vector3(0, currentHeight, 0);
 
             time += Time.deltaTime / duration;
             yield return null;

@@ -14,21 +14,21 @@ public class RotateBall : MonoBehaviour
 
     public AnimationCurve opacityOut;
 
-    public void StartFadeIn(Action finishedFade, float duration, float direction)
+    public void StartFadeIn(Action finishedFade, float duration, float direction, float playerTickRotation)
     {
-        StartCoroutine(DoFade(finishedFade, scaleIn, opacityIn, duration, direction, true));
+        StartCoroutine(DoFade(finishedFade, scaleIn, opacityIn, duration, direction, playerTickRotation, true));
     }
 
-    public void StartFadeOut(Action finishedFade, float duration, float direction)
+    public void StartFadeOut(Action finishedFade, float duration, float direction, float playerTickRotation)
     {
-        StartCoroutine(DoFade(finishedFade, scaleOut, opacityOut, duration, direction));
+        StartCoroutine(DoFade(finishedFade, scaleOut, opacityOut, duration, direction, playerTickRotation));
     }
 
-    IEnumerator DoFade(Action finishedFade, AnimationCurve scaleCurve, AnimationCurve opacityCurve, float duration, float direction, bool moveBall = false)
+    IEnumerator DoFade(Action finishedFade, AnimationCurve scaleCurve, AnimationCurve opacityCurve, float duration, float direction, float playerTickRotation, bool moveBall = false)
     {
         if (moveBall)
         {
-            transform.rotation = Quaternion.Euler(0, 0, 90 + UnityEngine.Random.Range(0, 180) * direction);
+            transform.rotation = Quaternion.Euler(0, 0, playerTickRotation + (45 + UnityEngine.Random.Range(0, 45)) * direction);
         }
 
         var spriteRenderer = GetComponentInChildren<SpriteRenderer>();

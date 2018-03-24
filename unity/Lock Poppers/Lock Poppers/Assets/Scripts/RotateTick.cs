@@ -13,6 +13,8 @@ public class RotateTick : MonoBehaviour
 
     public float direction = 1f;
 
+    public float ZRotation { get { return transform.rotation.eulerAngles.z; } }
+
     public bool InsideBall { get { return tickTrigger == null ? false : tickTrigger.InsideBall; } }
 
     public void Rotate(bool rotate)
