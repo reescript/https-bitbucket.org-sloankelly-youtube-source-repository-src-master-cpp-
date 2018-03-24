@@ -1,0 +1,16 @@
+Full details: http://www.instructables.com/id/Make-Robot-voices-using-free-software/
+
+Open up Audacity, and use the File menu to select "Open". Navigate to the file you just saved and then open it.
+
+Here's where the real action is! Throughout the following steps you'll need to make sure that the whole audio file is selected by pressing CTRL+A. Here we go!
+
+1) Select the whole audio file. Use CTRL+A (hold down control and press the "A" key)
+2) Click on "Effect" in the menu bar, and select "Change Pitch..."
+3) Change the pitch -14%, and click OK.
+4) In the Effect menu, choose "Echo"
+5) Change "Delay time" to .015 and "Decay Factor" to .65. Click OK.
+6) Again in the Effect menu, choose "Change Tempo..."
+7) Decrease the tempo by 10% (-10.000) and click OK
+8) Repeat steps 4 and 5
+
+Now play your robot voice with the green "Play" button toward the top. Isn't it amazing?

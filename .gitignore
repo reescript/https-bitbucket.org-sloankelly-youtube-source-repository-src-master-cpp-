@@ -37,7 +37,6 @@ cpp/_ignore/
 unity/UI/DynamicallyAddingButtons/Temp/
 unity/Interactions/Elevator/Elevator Interaction/Library/
 unity/Interactions/Elevator/Elevator Interaction/Assets/Standard Assets/
-*.unitypackage
 unity/Interactions/Elevator/Elevator Interaction/Temp/
 unity/Flappy Bird/Library/
 unity/Ludum Dare 40/Ludum Dare 40/Temp/
@@ -52,3 +51,8 @@ unity/Riff_On_Shiff/Library/
 unity/Lock Poppers/Lock Poppers/Library/
 cpp/networking/SocketsWrapper/
 unity/Konami Code/Konami Code/Library/
+unity/Subtitles/Subtitles/Assets/ProCore/
+unity/Subtitles/Subtitles/Assets/Standard Assets/
+unity/Subtitles/Subtitles/Library/
+unity/Interactions/ElevatorStartingScene.unitypackage
+unity/Interactions/SloanKelly.GameLib.unitypackage
