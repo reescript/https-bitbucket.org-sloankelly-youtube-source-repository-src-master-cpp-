@@ -8,6 +8,10 @@ public class ScriptManager : MonoBehaviour
 
     public string resourceFile = "script";
 
+    public string defaultLanguage = "en";
+
+    public string overrideLanguage = "";
+
     public string[] GetText(string textKey)
     {
         string[] tmp = new string[] { };
@@ -19,12 +23,35 @@ public class ScriptManager : MonoBehaviour
 
     private void Awake()
     {
-        var textAsset = Resources.Load<TextAsset>(resourceFile);
-        var voText = JsonUtility.FromJson<VoiceOverText>(textAsset.text);
+        var json = LoadScriptFile();
+        var voText = JsonUtility.FromJson<VoiceOverText>(json);
 
         foreach (var t in voText.lines)
         {
             lines[t.key] = t.line;
         }
+    }
+
+    private string LoadScriptFile()
+    {
+        var countryCode = LanguageHelper.Get2LetterISOCodeFromSystemLanguage();
+        if (!string.IsNullOrEmpty(overrideLanguage))
+        {
+            countryCode = overrideLanguage;
+        }
+
+        var codes = new string[] { countryCode, defaultLanguage };
+
+        foreach (var code in codes)
+        {
+            string scriptFileName = resourceFile + "." + code;
+            var textAsset = Resources.Load<TextAsset>(scriptFileName);
+            if (textAsset != null)
+            {
+                return textAsset.text;
+            }
+        }
+
+        return "";
     }
 }

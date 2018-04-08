@@ -368,7 +368,9 @@
     <None Include="Assets\ProCore\ProBuilder\Shader\pb_VertexPicker.shader" />
     <None Include="Assets\ProCore\ProBuilder\Shader\pb_VertexShader.shader" />
     <None Include="Assets\ProCore\ProBuilder\readme.txt" />
-    <None Include="Assets\Resources\script.txt" />
+    <None Include="Assets\Resources\script.en.txt" />
+    <None Include="Assets\Resources\script.fr.txt" />
+    <None Include="Assets\Resources\script.ru.txt" />
     <None Include="Assets\Standard Assets\Characters\ThirdPersonCharacter\ThirdPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
   </ItemGroup>
