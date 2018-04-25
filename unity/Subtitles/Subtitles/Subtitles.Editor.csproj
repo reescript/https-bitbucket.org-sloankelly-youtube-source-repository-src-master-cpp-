@@ -370,6 +370,10 @@
     <Compile Include="Assets\ProCore\ProBuilder\Editor\pb_MissingScriptEditor.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\Editor\pb_Preferences.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\Editor\pb_ScenePostProcessor.cs" />
+    <Compile Include="Assets\Scripts\Editor\GoogleScriptImporter.cs" />
+    <Compile Include="Assets\Scripts\Editor\ScriptGoogleSheet.cs" />
+    <Compile Include="Assets\Scripts\Editor\ScriptRow.cs" />
+    <Compile Include="Assets\Scripts\Editor\ScriptRowExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ProCore\ProBuilder\API Examples\Icosphere FFT\README.txt" />

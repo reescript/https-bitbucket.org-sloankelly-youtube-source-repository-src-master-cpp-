@@ -1,17 +1,1 @@
-{
-	"lines":
-	[
-		{
-			"key": "junk-pile",
-			"line": [ "Я не вижу ничего полезного в этой мусорной куче." ]
-		},
-		{
-			"key": "big-red-button",
-			"line": [ "В уведомлении над большой красной кнопкой говорится: «Нажмите большую красную кнопку”.", "Это довольно очевидно, когда вы об этом думаете.", "Я имею в виду, это БОЛЬШАЯ КРАСНАЯ КНОПКА." ]
-		},
-		{
-			"key": "detecting-lifeform",
-			"line": [ "Je détecte une forme de vie en avance ..." ]
-		}
-	]
-}
+{"lines":[{"key":"big-red-button","line":["This text should be in french"]},{"key":"detecting-lifeform","line":["Je détecte une forme de vie en avance ..."]},{"key":"junk-pile","line":["Texte manquant!"]}]}

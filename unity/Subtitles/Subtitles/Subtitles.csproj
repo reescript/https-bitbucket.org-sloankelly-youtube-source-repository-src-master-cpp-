@@ -312,6 +312,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CloudTools\GSFU 2.0\CloudConnector.cs" />
+    <Compile Include="Assets\CloudTools\GSFU 2.0\CloudConnectorCore.cs" />
+    <Compile Include="Assets\CloudTools\GSFU 2.0\CloudConnectorEditor.cs" />
+    <Compile Include="Assets\CloudTools\GSFU 2.0\GSFU_Demo_Editor.cs" />
+    <Compile Include="Assets\CloudTools\GSFU 2.0\GSFU_Demo_Runtime.cs" />
+    <Compile Include="Assets\CloudTools\GSFU 2.0\GSFU_Demo_Utils.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Icosphere FFT\Scripts\CameraControls.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Icosphere FFT\Scripts\IcoBumpin.cs" />
     <Compile Include="Assets\ProCore\ProBuilder\API Examples\Misc\HueCube.cs" />

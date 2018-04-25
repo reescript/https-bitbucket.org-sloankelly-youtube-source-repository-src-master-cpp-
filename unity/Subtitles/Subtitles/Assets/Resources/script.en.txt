@@ -1,17 +1,1 @@
-{
-	"lines":
-	[
-		{
-			"key": "junk-pile",
-			"line": [ "I can’t see anything of value in this junk pile." ]
-		},
-		{
-			"key": "big-red-button",
-			"line": [ "The notice above the big red button says “Push the big red button”.", "It’s fairly obvious when you think about it.", "I mean, it’s a BIG RED BUTTON." ]
-		},
-		{
-			"key": "detecting-lifeform",
-			"line": [ "I’m detecting a life form up ahead..." ]
-		}
-	]
-}
+{"lines":[{"key":"big-red-button","line":["The notice above the big red button says “Push the big red button”.","It’s fairly obvious when you think about it.","I mean, it’s a BIG RED BUTTON."]},{"key":"detecting-lifeform","line":["I’m detecting a life form up ahead..."]},{"key":"junk-pile","line":["I can’t see anything of value in this junk pile."]}]}
